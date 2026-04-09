@@ -1,0 +1,1809 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>São João de Sergipe 2026</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;700;800;900&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    /* ── DESIGN TOKENS ─────────────────────────────────────── */
+    :root {
+      --bg:          #FFF8F0;
+      --dark:        #1C0A00;
+      --card:        #FFFFFF;
+      --primary:     #EA580C;
+      --primary-dim: rgba(234,88,12,.12);
+      --secondary:   #F59E0B;
+      --accent:      #B91C1C;
+      --green:       #15803D;
+      --muted-bg:    #FEF3C7;
+      --muted-fg:    #92400E;
+      --border:      #FED7AA;
+      --text:        #1C0A00;
+      --radius:      1rem;
+      --header-h:    56px;
+      --band-h:      22px;
+      --bottom-h:    64px;
+      --shadow-warm: 0 2px 16px rgba(234,88,12,.10);
+      --shadow-card: 0 1px 4px rgba(28,10,0,.07), 0 4px 16px rgba(28,10,0,.06);
+    }
+
+    /* ── RESET ──────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Nunito', sans-serif;
+      font-weight: 600;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      padding-bottom: var(--bottom-h);
+      -webkit-font-smoothing: antialiased;
+    }
+    @media (min-width: 768px) { body { padding-bottom: 0; } }
+    h1,h2,h3,h4,h5 { font-family: 'Baloo 2', cursive; }
+    a { text-decoration: none; color: inherit; }
+    button { cursor: pointer; font-family: 'Nunito', sans-serif; font-weight: 700; border: none; background: none; }
+    img { max-width: 100%; }
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition-duration: .01ms !important; animation-duration: .01ms !important; } }
+
+    /* ── LAYOUT ─────────────────────────────────────────────── */
+    .container { max-width: 1080px; margin: 0 auto; padding: 0 1rem; }
+
+    /* ── HEADER ─────────────────────────────────────────────── */
+    .site-header {
+      position: sticky; top: 0; z-index: 50;
+      background: var(--dark);
+    }
+    .bandeirinhas-strip { height: var(--band-h); overflow: hidden; line-height: 0; }
+    .bandeirinhas-strip svg { display: block; }
+    .header-inner {
+      display: flex; align-items: center; justify-content: space-between;
+      height: var(--header-h); padding: 0 1rem; gap: 0.75rem;
+    }
+    .logo-area { display: flex; align-items: center; gap: 0.625rem; min-width: 0; }
+    .logo-area img { height: 44px; width: auto; cursor: pointer; }
+    .logo-fallback {
+      display: none; font-family: 'Baloo 2', cursive; font-weight: 900;
+      font-size: 1rem; color: var(--secondary); letter-spacing: -0.02em;
+      cursor: pointer; white-space: nowrap;
+    }
+    .header-actions { display: flex; align-items: center; gap: 0.375rem; }
+    .hbtn {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 40px; height: 40px; border-radius: 0.625rem;
+      color: rgba(255,255,255,.75); transition: background .2s, color .2s;
+      background: transparent; cursor: pointer;
+    }
+    .hbtn:hover, .hbtn.active { background: rgba(255,255,255,.12); color: #fff; }
+    .hbtn:focus-visible { outline: 2px solid var(--secondary); outline-offset: 2px; }
+
+    /* ── BOTTOM NAV ─────────────────────────────────────────── */
+    .bottom-nav {
+      position: fixed; bottom: 0; left: 0; right: 0; z-index: 50;
+      height: var(--bottom-h);
+      background: var(--dark);
+      display: flex; align-items: stretch;
+      border-top: 1px solid rgba(255,255,255,.08);
+    }
+    @media (min-width: 768px) { .bottom-nav { display: none; } }
+    .bnav-item {
+      flex: 1; display: flex; flex-direction: column; align-items: center;
+      justify-content: center; gap: 3px; cursor: pointer;
+      color: rgba(255,255,255,.45); transition: color .2s, background .2s;
+      position: relative; padding: 0 4px;
+    }
+    .bnav-item:hover { color: rgba(255,255,255,.75); }
+    .bnav-item.active { color: var(--secondary); }
+    .bnav-item.active::after {
+      content: ''; position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+      width: 32px; height: 2px; background: var(--secondary); border-radius: 0 0 2px 2px;
+    }
+    .bnav-label { font-size: 0.6rem; font-weight: 800; letter-spacing: .02em; text-transform: uppercase; }
+    .bnav-badge {
+      position: absolute; top: 8px; right: calc(50% - 12px);
+      background: var(--accent); color: white;
+      font-size: .55rem; font-weight: 900; line-height: 1;
+      min-width: 14px; height: 14px; padding: 0 3px;
+      border-radius: 99px; display: flex; align-items: center; justify-content: center;
+    }
+
+    /* ── SEARCH OVERLAY ─────────────────────────────────────── */
+    .search-overlay {
+      position: fixed; inset: 0; z-index: 60;
+      background: rgba(28,10,0,.85); backdrop-filter: blur(4px);
+      display: none; flex-direction: column;
+    }
+    .search-overlay.open { display: flex; }
+    .search-overlay-bar {
+      display: flex; align-items: center; gap: 0.75rem;
+      padding: 0.75rem 1rem;
+      background: var(--dark); border-bottom: 1px solid rgba(255,255,255,.08);
+    }
+    .search-overlay-input {
+      flex: 1; background: rgba(255,255,255,.1); border: 1.5px solid rgba(255,255,255,.15);
+      border-radius: 0.75rem; padding: 0.625rem 1rem;
+      color: white; font-family: 'Nunito', sans-serif; font-size: 1rem; font-weight: 600;
+      outline: none;
+    }
+    .search-overlay-input::placeholder { color: rgba(255,255,255,.4); }
+    .search-overlay-input:focus { border-color: var(--secondary); }
+    .search-close { color: rgba(255,255,255,.6); font-size: 0.875rem; font-weight: 800; white-space: nowrap; cursor: pointer; padding: 0.5rem; }
+    .search-results {
+      flex: 1; overflow-y: auto; padding: 1rem;
+    }
+    .search-section-title { font-family: 'Baloo 2', cursive; font-size: 0.75rem; font-weight: 800; color: rgba(255,255,255,.4); letter-spacing: .08em; text-transform: uppercase; margin-bottom: 0.5rem; margin-top: 1rem; }
+    .search-section-title:first-child { margin-top: 0; }
+    .search-tag {
+      display: inline-flex; align-items: center; gap: 0.375rem;
+      background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.15);
+      color: white; padding: 0.375rem 0.875rem; border-radius: 9999px;
+      font-size: 0.8rem; font-weight: 700; margin: 0.25rem 0.25rem 0.25rem 0;
+      cursor: pointer; transition: background .15s;
+    }
+    .search-tag:hover { background: rgba(255,255,255,.18); }
+    .search-event-card {
+      background: rgba(255,255,255,.07); border: 1px solid rgba(255,255,255,.1);
+      border-radius: 0.75rem; padding: 0.875rem 1rem; margin-bottom: 0.5rem;
+      cursor: pointer; transition: background .15s;
+    }
+    .search-event-card:hover { background: rgba(255,255,255,.12); }
+    .search-event-name { font-family: 'Baloo 2', cursive; font-weight: 800; color: white; font-size: 0.9rem; }
+    .search-event-meta { font-size: 0.75rem; color: rgba(255,255,255,.5); margin-top: 3px; }
+    .search-empty { text-align: center; color: rgba(255,255,255,.4); padding: 3rem 0; font-size: 0.875rem; }
+    .search-placeholder { text-align: center; padding: 3rem 0; color: rgba(255,255,255,.3); }
+    .search-placeholder svg { margin: 0 auto 0.75rem; opacity: .4; }
+
+    /* ── HERO ───────────────────────────────────────────────── */
+    .hero { position: relative; overflow: hidden; background: var(--dark); }
+    .hero-img { width: 100%; height: clamp(220px, 40vw, 420px); object-fit: cover; object-position: center top; display: block; opacity: .85; }
+    .hero-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(28,10,0,1) 0%, rgba(28,10,0,.5) 50%, rgba(28,10,0,.15) 100%);
+      pointer-events: none;
+    }
+    .hero-content {
+      position: absolute; bottom: 0; left: 0; right: 0;
+      padding: 1.5rem 1rem 1.25rem;
+    }
+    .hero-eyebrow {
+      font-size: 0.7rem; font-weight: 800; letter-spacing: .12em;
+      text-transform: uppercase; color: var(--secondary); margin-bottom: 0.25rem;
+    }
+    .hero-title {
+      font-family: 'Baloo 2', cursive; font-weight: 900;
+      font-size: clamp(1.5rem, 5vw, 2.5rem); color: white; line-height: 1.1;
+      margin-bottom: 0.625rem;
+    }
+    .hero-date-badge {
+      display: inline-flex; align-items: center; gap: 0.375rem;
+      background: var(--primary); color: white;
+      padding: 0.25rem 0.75rem; border-radius: 9999px;
+      font-size: 0.75rem; font-weight: 800;
+    }
+
+    /* ── FILTER STRIP (HOME) ────────────────────────────────── */
+    .filter-strip {
+      position: sticky; top: calc(var(--header-h) + var(--band-h)); z-index: 40;
+      background: rgba(255,248,240,.97); backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--border);
+      padding: 0.625rem 0;
+    }
+    .filter-inner { display: flex; gap: 0.5rem; align-items: center; flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; }
+    .filter-inner::-webkit-scrollbar { display: none; }
+    .chip {
+      display: inline-flex; align-items: center; gap: 0.3rem;
+      padding: 0.4rem 0.875rem; border-radius: 9999px;
+      border: 1.5px solid var(--border); background: var(--card);
+      font-size: 0.75rem; font-weight: 800; white-space: nowrap;
+      color: var(--text); cursor: pointer; transition: all .2s; flex-shrink: 0;
+    }
+    .chip:hover { border-color: var(--primary); }
+    .chip:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
+    .chip.on { border-color: var(--primary); background: var(--primary-dim); color: var(--primary); }
+    .chip-x {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 28px; height: 28px; border-radius: 9999px;
+      border: 1.5px solid var(--border); background: var(--card);
+      color: var(--muted-fg); cursor: pointer; transition: all .2s; flex-shrink: 0;
+    }
+    .chip-x:hover { border-color: var(--accent); color: var(--accent); }
+    .filter-count { margin-left: auto; font-size: 0.7rem; font-weight: 900; color: var(--muted-fg); white-space: nowrap; padding-right: 0.25rem; }
+
+    /* ── BOTTOM SHEETS (calendar + city) ───────────────────── */
+    .sheet-overlay {
+      position: fixed; inset: 0; background: rgba(0,0,0,.5);
+      z-index: 590; opacity: 0; pointer-events: none;
+      transition: opacity .25s;
+      backdrop-filter: blur(4px);
+    }
+    .sheet-overlay.open { opacity: 1; pointer-events: auto; }
+    .bottom-sheet {
+      position: fixed; bottom: 0; left: 0; right: 0;
+      background: var(--card); border-radius: 1.5rem 1.5rem 0 0;
+      z-index: 600; max-height: 85vh; overflow-y: auto;
+      transform: translateY(105%);
+      transition: transform .35s cubic-bezier(.32,.72,0,1);
+      padding-bottom: max(env(safe-area-inset-bottom, 0px), 1.5rem);
+      box-shadow: 0 -8px 32px rgba(0,0,0,.15);
+    }
+    .bottom-sheet.open { transform: translateY(0); }
+    @media (min-width: 520px) {
+      .bottom-sheet {
+        top: 50%; left: 50%; bottom: auto; right: auto;
+        width: 100%; max-width: 380px;
+        transform: translate(-50%, 40px) scale(0.95);
+        border-radius: 1.5rem;
+        transition: transform .3s cubic-bezier(.32,.72,0,1), opacity .3s;
+        opacity: 0; pointer-events: none;
+        padding-bottom: 0.5rem;
+      }
+      .bottom-sheet.open {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 1; pointer-events: auto;
+      }
+      .sheet-handle { display: none; }
+    }
+    .sheet-handle {
+      width: 40px; height: 4px; border-radius: 2px;
+      background: var(--border); margin: 0.75rem auto 0;
+    }
+    .sheet-head {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0.875rem 1rem 0.75rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .sheet-head-title { font-family: 'Baloo 2', cursive; font-weight: 800; font-size: 1rem; }
+    .sheet-close {
+      width: 32px; height: 32px; border-radius: 9999px;
+      border: 1.5px solid var(--border); background: var(--bg);
+      cursor: pointer; display: flex; align-items: center; justify-content: center;
+      color: var(--muted-fg); transition: all .2s;
+    }
+    .sheet-close:hover { border-color: var(--primary); color: var(--primary); }
+
+    /* Calendar in sheet */
+    .cal-nav-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.75rem; padding: 0.75rem 1rem 0; }
+    .cal-nav-btn { width: 40px; height: 40px; border-radius: 0.75rem; border: 1.5px solid var(--border); background: var(--bg); cursor: pointer; display: flex; align-items: center; justify-content: center; color: var(--text); transition: border-color .2s; }
+    .cal-nav-btn:hover { border-color: var(--primary); }
+    .cal-month-label { font-family: 'Baloo 2', cursive; font-weight: 800; font-size: 1rem; }
+    .cal-grid { display: grid; grid-template-columns: repeat(7,1fr); gap: 3px; padding: 0 0.75rem 0.5rem; }
+    .cal-dow { text-align: center; font-size: 0.65rem; font-weight: 900; color: var(--muted-fg); padding: 4px 0 6px; text-transform: uppercase; letter-spacing: .03em; }
+    .cal-day {
+      aspect-ratio: 1; display: flex; align-items: center; justify-content: center;
+      font-size: 0.875rem; font-weight: 700; border-radius: 0.625rem;
+      cursor: pointer; transition: background .15s; min-height: 40px;
+    }
+    .cal-day:hover { background: var(--muted-bg); }
+    .cal-day.has-ev { background: rgba(234,88,12,.15); color: var(--primary); font-weight: 900; }
+    .cal-day.sel { background: var(--primary) !important; color: white; font-weight: 900; border-radius: 9999px; }
+    .cal-day.other { opacity: .35; pointer-events: none; }
+    .cal-day.empty { cursor: default; pointer-events: none; }
+
+    /* City list in sheet */
+    .city-sheet-list { padding: 1rem 1.25rem 1.5rem; display: grid; gap: 0.625rem; grid-template-columns: 1fr 1fr; }
+    .city-sheet-item {
+      display: flex; align-items: center; justify-content: center; text-align: center;
+      padding: 0.75rem 0.5rem; cursor: pointer;
+      font-size: 0.85rem; font-weight: 800; border-radius: 0.75rem;
+      border: 1.5px solid var(--border);
+      transition: all .2s; color: var(--text); background: var(--bg);
+    }
+    .city-sheet-item:hover, .city-sheet-item:focus-visible { border-color: var(--primary); outline: none; }
+    .city-sheet-item.sel { color: white; background: var(--primary); border-color: var(--primary); box-shadow: 0 4px 12px rgba(234,88,12,.2); }
+    .city-check { display: none; }
+
+    /* ── SECTION HEADING ────────────────────────────────────── */
+    .section { padding: 1.25rem 0; }
+    .sec-head { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.875rem; }
+    .sec-title { font-family: 'Baloo 2', cursive; font-weight: 900; font-size: 1.1rem; }
+    .badge {
+      display: inline-flex; align-items: center; gap: 0.2rem;
+      padding: 0.1rem 0.5rem; border-radius: 9999px;
+      font-size: 0.65rem; font-weight: 900; letter-spacing: .02em;
+    }
+    .badge-muted { background: var(--muted-bg); color: var(--muted-fg); }
+    .badge-destaque { background: var(--secondary); color: var(--dark); }
+    .badge-hoje { background: var(--accent); color: white; }
+
+    /* ── HOJE SECTION ───────────────────────────────────────── */
+    .hoje-section {
+      background: linear-gradient(135deg, var(--dark) 0%, #3D1506 100%);
+      padding: 1.25rem 0 1.5rem;
+      position: relative; overflow: hidden;
+    }
+    .hoje-section::before {
+      content: ''; position: absolute; inset: 0;
+      background: repeating-linear-gradient(45deg, transparent, transparent 40px, rgba(245,158,11,.03) 40px, rgba(245,158,11,.03) 80px);
+      pointer-events: none;
+    }
+    .hoje-eyebrow {
+      font-size: 0.65rem; font-weight: 900; letter-spacing: .14em;
+      text-transform: uppercase; color: var(--secondary); margin-bottom: 0.375rem;
+      display: flex; align-items: center; gap: 0.375rem;
+    }
+    .hoje-title {
+      font-family: 'Baloo 2', cursive; font-weight: 900;
+      font-size: 1.5rem; color: white; margin-bottom: 1rem; line-height: 1.1;
+    }
+    .hoje-cards { display: flex; gap: 0.75rem; overflow-x: auto; padding-bottom: 0.25rem; scrollbar-width: none; }
+    .hoje-cards::-webkit-scrollbar { display: none; }
+
+    /* Hoje event card */
+    .hoje-card {
+      flex-shrink: 0; width: 220px;
+      background: rgba(255,255,255,.08); border: 1.5px solid rgba(255,255,255,.12);
+      border-radius: var(--radius); padding: 1rem;
+      cursor: pointer; transition: background .2s, transform .2s, border-color .2s;
+      position: relative; overflow: hidden;
+    }
+    .hoje-card:hover { background: rgba(255,255,255,.14); border-color: var(--secondary); transform: translateY(-2px); }
+    .hoje-card .destaque-glow {
+      position: absolute; top: 0; right: 0;
+      width: 60px; height: 60px;
+      background: radial-gradient(circle at top right, rgba(245,158,11,.35), transparent 70%);
+      pointer-events: none;
+    }
+    .hoje-card-time {
+      font-size: 0.7rem; font-weight: 900; letter-spacing: .06em;
+      color: var(--secondary); margin-bottom: 0.375rem; text-transform: uppercase;
+    }
+    .hoje-card-name { font-family: 'Baloo 2', cursive; font-weight: 900; font-size: 0.95rem; color: white; line-height: 1.2; margin-bottom: 0.5rem; }
+    .hoje-card-city { font-size: 0.7rem; color: rgba(255,255,255,.5); display: flex; align-items: center; gap: 0.25rem; }
+    .hoje-card-artists { display: flex; flex-wrap: wrap; gap: 0.25rem; margin-top: 0.5rem; }
+    .artist-pill { font-size: 0.6rem; font-weight: 800; background: rgba(234,88,12,.25); color: #FCA572; padding: 0.15rem 0.5rem; border-radius: 9999px; }
+
+    /* ── EVENT CARDS (main list) ────────────────────────────── */
+    .events-grid { display: grid; gap: 0.625rem; }
+    @media (min-width: 520px) { .events-grid { grid-template-columns: 1fr 1fr; } }
+    @media (min-width: 900px) { .events-grid { grid-template-columns: 1fr 1fr 1fr; } }
+
+    .ev-card {
+      background: var(--card); border-radius: var(--radius);
+      border: 1.5px solid var(--border);
+      padding: 0 0 0.875rem; overflow: hidden;
+      cursor: pointer; transition: box-shadow .2s, transform .2s, border-color .2s;
+      display: flex; flex-direction: column;
+      box-shadow: var(--shadow-card);
+    }
+    .ev-card:hover { box-shadow: 0 4px 20px rgba(234,88,12,.18); transform: translateY(-2px); border-color: rgba(234,88,12,.4); }
+    .ev-card:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
+    .ev-card-top-bar { height: 3px; background: var(--border); }
+    .ev-card-top-bar.destaque { background: linear-gradient(90deg, var(--primary), var(--secondary)); }
+    .ev-card-body { padding: 0.875rem 0.875rem 0; flex: 1; display: flex; flex-direction: column; gap: 0.5rem; }
+    .ev-card-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 0.5rem; }
+    .ev-name { font-family: 'Baloo 2', cursive; font-weight: 900; font-size: 0.9rem; line-height: 1.25; flex: 1; }
+    .ev-meta { display: flex; flex-wrap: wrap; gap: 0.5rem 0.75rem; font-size: 0.72rem; color: var(--muted-fg); }
+    .ev-meta-item { display: inline-flex; align-items: center; gap: 0.25rem; }
+    .ev-artists { display: flex; flex-wrap: wrap; gap: 0.25rem; padding: 0 0.875rem; margin-top: auto; }
+    .ev-artist-tag { font-size: 0.65rem; font-weight: 800; background: var(--primary-dim); color: var(--primary); padding: 0.2rem 0.5rem; border-radius: 9999px; }
+
+    /* Date group heading */
+    .date-group { margin-bottom: 2rem; }
+    .date-heading {
+      display: flex; align-items: center; gap: 0.625rem; margin-bottom: 0.875rem;
+    }
+    .date-pill {
+      font-family: 'Baloo 2', cursive; font-weight: 900; font-size: 1.2rem;
+      color: var(--text);
+    }
+
+    /* ── CITIES GRID ────────────────────────────────────────── */
+    .explore-section {
+      background: linear-gradient(180deg, var(--bg) 0%, rgba(234,88,12,.03) 100%);
+      border-top: 1px solid rgba(234,88,12,.08);
+      padding: 3.5rem 0 4.5rem;
+      margin-top: 2rem;
+    }
+    .explore-head-premium { text-align: center; margin-bottom: 2.5rem; display: flex; flex-direction: column; align-items: center; }
+    .explore-icon-wrapper {
+      display: flex; align-items: center; justify-content: center;
+      width: 56px; height: 56px; border-radius: 50%;
+      background: radial-gradient(circle at center, rgba(234,88,12,.15) 0%, rgba(234,88,12,0) 70%);
+      color: var(--primary); margin-bottom: 0.5rem;
+    }
+    .explore-head-premium .sec-title { font-size: 1.75rem; margin-bottom: 0.5rem; color: var(--text); line-height: 1.2; }
+    .explore-subtitle { font-size: 0.9rem; color: var(--muted-fg); font-weight: 600; max-width: 400px; line-height: 1.4; }
+
+    .cities-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
+    @media (min-width: 520px) { .cities-grid { grid-template-columns: repeat(3,1fr); gap: 1rem; } }
+    @media (min-width: 900px) { .cities-grid { grid-template-columns: repeat(4,1fr); gap: 1.25rem; } }
+
+    .city-card {
+      display: flex; flex-direction: column; align-items: flex-start;
+      background: var(--card); border: 1.5px solid rgba(234,88,12,.1); border-radius: 1.25rem;
+      padding: 1.25rem; cursor: pointer;
+      transition: all .3s cubic-bezier(.175,.885,.32,1.275);
+      box-shadow: 0 4px 12px rgba(0,0,0,.03), 0 1px 3px rgba(0,0,0,.02);
+      position: relative; overflow: hidden;
+      min-height: 100px;
+    }
+    .city-card::before {
+      content: ''; position: absolute; inset: 0;
+      background: linear-gradient(135deg, transparent 40%, rgba(245,158,11,.08) 100%);
+      pointer-events: none; opacity: 0; transition: opacity .3s;
+    }
+    .city-card:hover {
+      border-color: rgba(234,88,12,.3); transform: translateY(-4px);
+      box-shadow: 0 12px 24px rgba(234,88,12,.1);
+    }
+    .city-card:hover::before { opacity: 1; }
+    .city-card:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
+    
+    .city-icon { color: var(--primary); margin-bottom: 0.5rem; transition: transform .3s; }
+    .city-card:hover .city-icon { transform: scale(1.15) rotate(5deg); }
+    .city-name { font-family: 'Baloo 2', cursive; font-weight: 900; font-size: 1.05rem; line-height: 1.2; margin-bottom: 0.375rem; color: var(--dark); }
+    .city-count { font-size: 0.7rem; color: var(--primary); font-weight: 800; background: rgba(234,88,12,.08); padding: 0.15rem 0.625rem; border-radius: 9999px; }
+
+    /* ── BACK BUTTON ────────────────────────────────────────── */
+    .back-btn {
+      display: inline-flex; align-items: center; gap: 0.375rem;
+      padding: 0.5rem 0.875rem 0.5rem 0.625rem;
+      border-radius: 9999px; border: 1.5px solid var(--border); background: var(--card);
+      font-size: 0.8rem; font-weight: 800; color: var(--text); cursor: pointer;
+      transition: all .2s; box-shadow: var(--shadow-card);
+    }
+    .back-btn:hover { border-color: var(--primary); color: var(--primary); }
+    .back-btn:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
+
+    /* ── PAGE HEADER ────────────────────────────────────────── */
+    .page-hero {
+      background: linear-gradient(135deg, var(--dark) 0%, #3D1506 100%);
+      padding: 1.5rem 1rem 2rem;
+      position: relative; overflow: hidden;
+    }
+    .page-hero::before {
+      content: ''; position: absolute; inset: 0;
+      background: repeating-linear-gradient(45deg, transparent, transparent 40px, rgba(245,158,11,.03) 40px, rgba(245,158,11,.03) 80px);
+      pointer-events: none;
+    }
+    .page-hero-back { margin-bottom: 1rem; }
+    .page-hero-title {
+      font-family: 'Baloo 2', cursive; font-weight: 900;
+      font-size: clamp(1.5rem, 5vw, 2.25rem); color: white; line-height: 1.1;
+      display: flex; align-items: center; gap: 0.5rem;
+    }
+    .page-hero-sub { font-size: 0.875rem; color: rgba(255,255,255,.55); margin-top: 0.375rem; }
+    .back-btn-light {
+      display: inline-flex; align-items: center; gap: 0.375rem;
+      padding: 0.375rem 0.75rem 0.375rem 0.5rem; border-radius: 9999px;
+      border: 1px solid rgba(255,255,255,.2); background: rgba(255,255,255,.08);
+      color: rgba(255,255,255,.75); font-size: 0.8rem; font-weight: 800; cursor: pointer;
+      transition: background .2s; font-family: 'Nunito', sans-serif;
+    }
+    .back-btn-light:hover { background: rgba(255,255,255,.15); color: white; }
+
+    /* ── DAY PILLS (cidade page) ────────────────────────────── */
+    .day-pills { display: flex; gap: 0.5rem; overflow-x: auto; padding: 1rem 1rem 0.5rem; scrollbar-width: none; background: var(--card); border-bottom: 1px solid var(--border); }
+    .day-pills::-webkit-scrollbar { display: none; }
+    .day-pill {
+      flex-shrink: 0; display: flex; flex-direction: column; align-items: center;
+      padding: 0.5rem 0.875rem; border-radius: 0.875rem;
+      border: 1.5px solid var(--border); background: var(--bg);
+      cursor: pointer; transition: all .2s; min-width: 58px;
+    }
+    .day-pill:hover { border-color: var(--primary); }
+    .day-pill.active { background: var(--primary); border-color: var(--primary); color: white; }
+    .day-pill.active .dp-dow, .day-pill.active .dp-cnt { color: rgba(255,255,255,.8); }
+    .dp-dow { font-size: 0.6rem; font-weight: 900; letter-spacing: .04em; text-transform: uppercase; color: var(--muted-fg); }
+    .dp-num { font-family: 'Baloo 2', cursive; font-weight: 900; font-size: 1.4rem; line-height: 1.1; }
+    .dp-cnt { font-size: 0.6rem; color: var(--muted-fg); font-weight: 700; }
+    .date-sticky-header {
+      font-family: 'Baloo 2', cursive; font-size: 1rem; font-weight: 900;
+      color: var(--primary); padding: 0.625rem 0;
+      position: sticky; top: calc(var(--header-h) + var(--band-h) + 80px);
+      background: rgba(255,248,240,.97); backdrop-filter: blur(4px); z-index: 10;
+    }
+
+    /* ── EVENTO PAGE ────────────────────────────────────────── */
+    .ev-detail { max-width: 680px; }
+    .ev-detail-card {
+      background: var(--card); border-radius: var(--radius);
+      border: 1.5px solid var(--border); overflow: hidden;
+      box-shadow: var(--shadow-card);
+    }
+    .ev-detail-hd {
+      background: linear-gradient(135deg, rgba(234,88,12,.1), rgba(245,158,11,.12));
+      padding: 1.5rem 1.5rem 1.25rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .ev-detail-title {
+      font-family: 'Baloo 2', cursive; font-weight: 900;
+      font-size: clamp(1.4rem, 4vw, 1.9rem); line-height: 1.15; margin-top: 0.375rem;
+    }
+    .ev-detail-body { padding: 1.5rem; }
+    @media (max-width: 520px) { .ev-detail-hd, .ev-detail-body { padding: 1.125rem; } }
+    .info-row { display: flex; align-items: center; gap: 0.625rem; font-size: 0.875rem; color: var(--muted-fg); }
+    .info-row svg { color: var(--primary); flex-shrink: 0; }
+    .info-row strong { color: var(--text); }
+    .divider { border: none; border-top: 1px solid var(--border); margin: 1.25rem 0; }
+    .sub-heading { font-family: 'Baloo 2', cursive; font-weight: 900; font-size: 1.05rem; margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.5rem; }
+    .lineup { display: flex; flex-direction: column; gap: 0.5rem; }
+    .lineup-item {
+      display: flex; align-items: center; gap: 0.75rem;
+      background: var(--muted-bg); border-radius: 0.75rem;
+      padding: 0.75rem 1rem; cursor: pointer; transition: background .2s;
+    }
+    .lineup-item:hover { background: #FDE68A; }
+    .lineup-num { font-size: 0.75rem; font-weight: 900; color: var(--primary); width: 1.5rem; }
+    .lineup-name { font-size: 0.9rem; font-weight: 700; }
+    .actions-row { display: flex; gap: 0.75rem; flex-wrap: wrap; }
+    .btn-action {
+      flex: 1; min-width: 120px;
+      display: flex; align-items: center; justify-content: center; gap: 0.5rem;
+      padding: 0.75rem 1rem; border-radius: 0.875rem;
+      font-size: 0.875rem; font-weight: 800; font-family: 'Nunito', sans-serif;
+      cursor: pointer; transition: all .2s;
+    }
+    .btn-action:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
+    .btn-maps { background: var(--primary); color: white; border: 2px solid var(--primary); }
+    .btn-maps:hover { background: #C2410C; border-color: #C2410C; }
+    .btn-whatsapp { background: #25D366; color: white; border: 2px solid #25D366; }
+    .btn-whatsapp:hover { background: #1DA851; border-color: #1DA851; }
+    .btn-share { background: var(--card); color: var(--text); border: 2px solid var(--border); }
+    .btn-share:hover { border-color: var(--primary); }
+    .descricao { font-size: 0.9rem; color: var(--muted-fg); line-height: 1.65; }
+
+    /* ── ARTISTA PAGE ───────────────────────────────────────── */
+    .artista-detail { max-width: 680px; }
+    .artista-card {
+      background: var(--card); border-radius: var(--radius);
+      border: 1.5px solid var(--border); overflow: hidden;
+      box-shadow: var(--shadow-card);
+    }
+    .artista-hd {
+      background: linear-gradient(135deg, rgba(234,88,12,.1), rgba(185,28,28,.1));
+      padding: 2rem 1.5rem; text-align: center;
+      border-bottom: 1px solid var(--border);
+    }
+    .artista-avatar {
+      width: 72px; height: 72px; border-radius: 9999px;
+      background: linear-gradient(135deg, var(--primary-dim), rgba(245,158,11,.15));
+      border: 2px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 0.875rem; color: var(--primary);
+    }
+    .artista-title { font-family: 'Baloo 2', cursive; font-weight: 900; font-size: 1.75rem; }
+    .artista-sub { font-size: 0.875rem; color: var(--muted-fg); margin-top: 0.25rem; }
+    .artista-body { padding: 1.5rem; }
+    @media (max-width: 520px) { .artista-hd, .artista-body { padding: 1.25rem; } }
+    .agenda-item {
+      display: block; background: var(--muted-bg); border-radius: 0.875rem;
+      padding: 1rem 1.125rem; cursor: pointer; transition: background .2s; margin-bottom: 0.625rem;
+    }
+    .agenda-item:hover { background: #FDE68A; }
+    .agenda-name { font-family: 'Baloo 2', cursive; font-weight: 800; font-size: 0.95rem; margin-bottom: 0.25rem; }
+    .agenda-meta { display: flex; flex-wrap: wrap; gap: 0.5rem; font-size: 0.75rem; color: var(--muted-fg); }
+    .agenda-meta span { display: inline-flex; align-items: center; gap: 0.25rem; }
+
+    /* ── EMPTY STATE ────────────────────────────────────────── */
+    .empty-state { text-align: center; padding: 3rem 1rem; color: var(--muted-fg); }
+    .empty-state p { font-size: 0.9rem; margin-top: 0.75rem; }
+
+    /* ── NOT FOUND ──────────────────────────────────────────── */
+    .not-found { text-align: center; padding: 4rem 1rem; color: var(--muted-fg); }
+    .not-found h2 { font-family: 'Baloo 2', cursive; font-weight: 900; font-size: 1.5rem; color: var(--text); margin-bottom: 0.5rem; }
+
+    /* ── UTILS ──────────────────────────────────────────────── */
+    .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; }
+
+    /* ── PAGE TRANSITION ────────────────────────────────────── */
+    .page-enter { animation: pageIn .2s ease both; }
+    @keyframes pageIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+
+    /* ── PULSE DOT ──────────────────────────────────────────── */
+    .pulse-dot {
+      width: 7px; height: 7px; border-radius: 9999px;
+      background: var(--accent); display: inline-block;
+      animation: pulse-anim 2s ease-in-out infinite;
+    }
+    @media (prefers-reduced-motion: reduce) { .pulse-dot { animation: none; } }
+    @keyframes pulse-anim {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.4); opacity: .7; }
+    }
+  </style>
+</head>
+<body>
+
+<div id="root"></div>
+
+<script>
+/* ═══════════════════════════════════════════════════════════
+   DATA
+═══════════════════════════════════════════════════════════ */
+const HOJE = "2026-04-08"; // Removido data de demonstração
+
+const cidades = [
+  { nome:"Aracaju",       slug:"aracaju" },
+  { nome:"Estância",      slug:"estancia" },
+  { nome:"Tobias Barreto",slug:"tobias-barreto" },
+  { nome:"Lagarto",       slug:"lagarto" },
+  { nome:"Itabaiana",     slug:"itabaiana" },
+  { nome:"Simão Dias",    slug:"simao-dias" },
+  { nome:"Poço Redondo",  slug:"poco-redondo" },
+  { nome:"Propriá",       slug:"propria" },
+];
+
+const locais = [
+  { nome:"Praça de Eventos Hilton Lopes", cidadeSlug:"aracaju",       lat:-10.9833, lng:-37.0476 },
+  { nome:"Praça da Matriz",               cidadeSlug:"estancia",      lat:-11.2683, lng:-37.4383 },
+  { nome:"Forródromo",                    cidadeSlug:"aracaju",       lat:-10.9111, lng:-37.0717 },
+  { nome:"Praça Camerino",                cidadeSlug:"tobias-barreto",lat:-11.1847, lng:-37.9997 },
+  { nome:"Praça Filomeno Hora",           cidadeSlug:"lagarto",       lat:-10.9167, lng:-37.6500 },
+  { nome:"Parque de Eventos",             cidadeSlug:"itabaiana",     lat:-10.6850, lng:-37.4253 },
+  { nome:"Praça Central",                 cidadeSlug:"simao-dias",    lat:-10.7383, lng:-37.8083 },
+  { nome:"Praça São Pedro",               cidadeSlug:"propria",       lat:-10.2117, lng:-36.8433 },
+  { nome:"Gonzagão",                      cidadeSlug:"aracaju",       lat:-10.9264, lng:-37.0504 },
+  { nome:"Baixa da Cachorrinha",          cidadeSlug:"aracaju",       lat:-10.9200, lng:-37.0533 },
+  { nome:"Centro de Criatividade",        cidadeSlug:"aracaju",       lat:-10.9186, lng:-37.0567 },
+  { nome:"Vila do Forró",                 cidadeSlug:"aracaju",       lat:-10.9375, lng:-37.0333 },
+];
+
+const artistas = [
+  // — outras cidades —
+  { nome:"Adelmário Coelho",           slug:"adelmario-coelho" },
+  { nome:"Zelito Miranda",             slug:"zelito-miranda" },
+  { nome:"Circuladô de Fulô",          slug:"circulado-de-fulo" },
+  { nome:"Conde do Forró",             slug:"conde-do-forro" },
+  { nome:"Estakazero",                 slug:"estakazero" },
+  { nome:"Tayrone",                    slug:"tayrone" },
+  { nome:"Léo Santana",                slug:"leo-santana" },
+  { nome:"Wesley Safadão",             slug:"wesley-safadao" },
+  // — Arraiá do Povo 2026 —
+  { nome:"Fogo na Saia",               slug:"fogo-na-saia" },
+  { nome:"Seu Desejo",                 slug:"seu-desejo" },
+  { nome:"Calcinha Preta",             slug:"calcinha-preta" },
+  { nome:"Chirlys Trindade",           slug:"chirlys-trindade" },
+  { nome:"Forró Brasil",               slug:"forro-brasil" },
+  { nome:"Kátia e Aduílio",            slug:"katia-e-aduilio" },
+  { nome:"Joelma",                     slug:"joelma" },
+  { nome:"Forró 10",                   slug:"forro-10" },
+  { nome:"Cintura Fina",               slug:"cintura-fina" },
+  { nome:"Baby Som",                   slug:"baby-som" },
+  { nome:"Henry Freitas",              slug:"henry-freitas" },
+  { nome:"Zé Tramela",                 slug:"ze-tramela" },
+  { nome:"Leonne o Nobre",             slug:"leonne-o-nobre" },
+  { nome:"Thiago Aquino",              slug:"thiago-aquino" },
+  { nome:"Natanzinho Lima",            slug:"natanzinho-lima" },
+  { nome:"Ittauan",                    slug:"ittauan" },
+  { nome:"As Patricinhas",             slug:"as-patricinhas" },
+  { nome:"Cavalo de Pau",              slug:"cavalo-de-pau" },
+  { nome:"Gustavo Mioto",              slug:"gustavo-mioto" },
+  { nome:"Jan Vaqueiro",               slug:"jan-vaqueiro" },
+  { nome:"Jeany Lins",                 slug:"jeany-lins" },
+  { nome:"Walkiria Santos",            slug:"walkiria-santos" },
+  { nome:"Ana Castela",                slug:"ana-castela" },
+  { nome:"Alê Ferraz",                 slug:"ale-ferraz" },
+  { nome:"Geninho Batalha",            slug:"geninho-batalha" },
+  { nome:"Jonas Esticado",             slug:"jonas-esticado" },
+  { nome:"Iguinho e Lulinha",          slug:"iguinho-e-lulinha" },
+  { nome:"Ávine Vinny",                slug:"avine-vinny" },
+  { nome:"André Novaes",               slug:"andre-novaes" },
+  { nome:"Zueirões do Forró",          slug:"zueiroes-do-forro" },
+  { nome:"Guilherme Dantas",           slug:"guilherme-dantas" },
+  { nome:"Duas Paixões",               slug:"duas-paixoes" },
+  { nome:"Tarcísio do Acordeon",       slug:"tarcisio-do-acordeon" },
+  { nome:"Dudu Moral",                 slug:"dudu-moral" },
+  { nome:"Flor de Maracujá",           slug:"flor-de-maracuja" },
+  { nome:"Dorgival Dantas",            slug:"dorgival-dantas" },
+  { nome:"Magníficos",                 slug:"magnificos" },
+  { nome:"Elton Mota",                 slug:"elton-mota" },
+  { nome:"Unha Pintada",               slug:"unha-pintada" },
+  { nome:"Devinho Novaes",             slug:"devinho-novaes" },
+  { nome:"Mikael Santos",              slug:"mikael-santos" },
+  { nome:"Eve Sandes",                 slug:"eve-sandes" },
+  { nome:"Igor Ativado",               slug:"igor-ativado" },
+  { nome:"João Gomes",                 slug:"joao-gomes" },
+  { nome:"Nattan",                     slug:"nattan" },
+  { nome:"Alisson Lima",               slug:"alisson-lima" },
+  { nome:"Nineia Oliveira",            slug:"nineia-oliveira" },
+  { nome:"Samyra Show",                slug:"samyra-show" },
+  { nome:"Simone Mendes",              slug:"simone-mendes" },
+  { nome:"Larissa Costa",              slug:"larissa-costa" },
+  { nome:"Quarto de Milha",            slug:"quarto-de-milha" },
+  { nome:"Falamansa",                  slug:"falamansa" },
+  { nome:"Zé Vaqueiro",                slug:"ze-vaqueiro" },
+  { nome:"Gil Mendes",                 slug:"gil-mendes" },
+  { nome:"Netto Ventura",              slug:"netto-ventura" },
+  { nome:"Jogo do Brasil",             slug:"jogo-do-brasil" },
+  { nome:"Mastruz com Leite",          slug:"mastruz-com-leite" },
+  { nome:"Raí Saia Rodada",            slug:"rai-saia-rodada" },
+  { nome:"Nuzio Medeiros",             slug:"nuzio-medeiros" },
+  { nome:"Cartas de Tarô",             slug:"cartas-de-taro" },
+  { nome:"Erivaldo de Carira",         slug:"erivaldo-de-carira" },
+  { nome:"Batista Lima",               slug:"batista-lima" },
+  { nome:"Zé Cantor",                  slug:"ze-cantor" },
+  { nome:"Raio da Silibrina",          slug:"raio-da-silibrina" },
+  { nome:"Nadson o Ferinha",           slug:"nadson-o-ferinha" },
+  { nome:"Silvano Sales",              slug:"silvano-sales" },
+  { nome:"Heitor Costa",               slug:"heitor-costa" },
+  { nome:"Heitor Santos",              slug:"heitor-santos" },
+  { nome:"Raniere Gomes",              slug:"raniere-gomes" },
+  { nome:"Cavaleiros do Forró",        slug:"cavaleiros-do-forro" },
+  { nome:"Limão com Mel",              slug:"limao-com-mel" },
+  { nome:"Vanessa Porto",              slug:"vanessa-porto" },
+  { nome:"Ju Marques",                 slug:"ju-marques" },
+  { nome:"Solange Almeida",            slug:"solange-almeida" },
+  { nome:"Fernandinha",                slug:"fernandinha" },
+  { nome:"Bia Brasil",                 slug:"bia-brasil" },
+  { nome:"Luan Estilizado",            slug:"luan-estilizado" },
+  { nome:"Luan Santana",               slug:"luan-santana" },
+  { nome:"João Bosco e Vinicius",      slug:"joao-bosco-e-vinicius" },
+  { nome:"Ygor Raniere",               slug:"ygor-raniere" },
+  { nome:"Maraisa Cantora",            slug:"maraisa-cantora" },
+  { nome:"Brasas do Forró",            slug:"brasas-do-forro" },
+  { nome:"Yasmin Sensação",            slug:"yasmin-sensacao" },
+  { nome:"Filho do Piseiro",           slug:"filho-do-piseiro" },
+  { nome:"Lucas Castro",               slug:"lucas-castro" },
+  { nome:"Marcelo Bala",               slug:"marcelo-bala" },
+  { nome:"Claudio Ney e Juliana",      slug:"claudio-ney-e-juliana" },
+  { nome:"Gusttavo Lima",              slug:"gusttavo-lima" },
+  { nome:"Franquinho Vaqueiro",        slug:"franquinho-vaqueiro" },
+  { nome:"Luanzinho Moraes",           slug:"luanzinho-moraes" },
+  { nome:"Fabiano Guimarães",          slug:"fabiano-guimaraes" },
+  { nome:"Rey Vaqueiro",               slug:"rey-vaqueiro" },
+  { nome:"Painel de Controle",         slug:"painel-de-controle" },
+  { nome:"Marcelinho",                 slug:"marcelinho" },
+  { nome:"Alcymar Monteiro",           slug:"alcymar-monteiro" },
+  { nome:"Geraldo Azevedo",            slug:"geraldo-azevedo" },
+  { nome:"Matheus e Kauan",            slug:"matheus-e-kauan" },
+  { nome:"Danielzinho Jr",             slug:"danielzinho-jr" },
+  { nome:"Liene Show",                 slug:"liene-show" },
+  { nome:"Taty Girl",                  slug:"taty-girl" },
+  { nome:"Lauana Prado",               slug:"lauana-prado" },
+  { nome:"Tatah Santana",              slug:"tatah-santana" },
+  { nome:"Danielzinho o Kaceteiro",    slug:"danielzinho-o-kaceteiro" },
+  { nome:"Eline Martins",              slug:"eline-martins" },
+  { nome:"Diego e Victor Hugo",        slug:"diego-e-victor-hugo" },
+  { nome:"Vitor Fernandes",            slug:"vitor-fernandes" },
+  { nome:"Breno Matos",                slug:"breno-matos" },
+  { nome:"Cuscuz com Leite",           slug:"cuscuz-com-leite" },
+  { nome:"Zezo",                       slug:"zezo" },
+  { nome:"Bruno e Marrone",            slug:"bruno-e-marrone" },
+  { nome:"Klessinha",                  slug:"klessinha" },
+  { nome:"Gardênia Mel",               slug:"gardenia-mel" },
+  { nome:"Pedro Lua",                  slug:"pedro-lua" },
+  { nome:"Elba Ramalho",               slug:"elba-ramalho" },
+  { nome:"Flávio José",                slug:"flavio-jose" },
+  { nome:"Mestrinho",                  slug:"mestrinho" },
+  { nome:"Forró Cana com Limão",       slug:"forro-cana-com-limao" },
+  // — Arrasta Fé —
+  { nome:"Rebanhão e Carlinhos Félix", slug:"rebanhao-carlinhos-felix" },
+  { nome:"Maria Marçal",               slug:"maria-marcal" },
+  { nome:"Preto no Branco",            slug:"preto-no-branco" },
+  { nome:"Renovart Banda",             slug:"renovart-banda" },
+  { nome:"William Sanfona",            slug:"william-sanfona" },
+  { nome:"Padre Fábio de Melo",        slug:"padre-fabio-de-melo" },
+  { nome:"Mano Walter",                slug:"mano-walter" },
+  { nome:"Diácono Rômulo",             slug:"diacono-romulo" },
+  { nome:"Afoxé de Preto",             slug:"afoxe-de-preto" },
+  { nome:"Joia do Couro",              slug:"joia-do-couro" },
+  { nome:"Rita Benneditto",            slug:"rita-benneditto" },
+  { nome:"Patota do Zé",               slug:"patota-do-ze" },
+];
+
+// ── Helpers p/ montar shows ──────────────────────────────
+const ADP = "Praça de Eventos Hilton Lopes"; // venue Arraiá do Povo
+function ev(id, nome, slug, data, destaque, descricao, arts, local=ADP, horario="19:00") {
+  return { id, nome, slug, cidadeSlug:"aracaju", local, data, horario, destaque, descricao, artistas: arts.map((s,i)=>({slug:s,ordem:i+1})) };
+}
+
+const eventos = [
+  // ══ ARRAIÁ DO POVO 2026 ═══════════════════════════════
+  ev("aj01","Arraiá do Povo — Calcinha Preta","arraia-do-povo-2026-05-29","2026-05-29",false,
+    "Abertura do Arraiá do Povo 2026 com Calcinha Preta Atemporal e Fogo na Saia.",
+    ["fogo-na-saia","seu-desejo","calcinha-preta","chirlys-trindade"]),
+
+  ev("aj02","Arraiá do Povo — Joelma","arraia-do-povo-2026-05-30","2026-05-30",true,
+    "Noite especial com Joelma e Kátia e Aduílio no Arraiá do Povo.",
+    ["forro-brasil","adelmario-coelho","katia-e-aduilio","joelma","forro-10"]),
+
+  ev("aj03","Arraiá do Povo — Henry Freitas","arraia-do-povo-2026-05-31","2026-05-31",false,
+    "Domingo de forró com Henry Freitas, Baby Som e Cintura Fina.",
+    ["cintura-fina","baby-som","henry-freitas","ze-tramela"]),
+
+  ev("aj04","Arraiá do Povo — Natanzinho Lima","arraia-do-povo-2026-06-02","2026-06-02",false,
+    "Terça de forró com Natanzinho Lima e Thiago Aquino.",
+    ["leonne-o-nobre","thiago-aquino","natanzinho-lima","ittauan"]),
+
+  ev("aj05","Arraiá do Povo — Gustavo Mioto","arraia-do-povo-2026-06-03","2026-06-03",true,
+    "Quarta de arraiá com Gustavo Mioto fechando a noite.",
+    ["as-patricinhas","cavalo-de-pau","gustavo-mioto","jan-vaqueiro"]),
+
+  ev("aj06","Arraiá do Povo — Ana Castela","arraia-do-povo-2026-06-04","2026-06-04",true,
+    "Quinta de forró com Ana Castela e Walkiria Santos.",
+    ["jeany-lins","walkiria-santos","ana-castela","ale-ferraz"]),
+
+  ev("aj07","Arraiá do Povo — Ávine Vinny","arraia-do-povo-2026-06-05","2026-06-05",true,
+    "Sexta de xote e baião com Ávine Vinny e Jonas Esticado.",
+    ["geninho-batalha","jonas-esticado","iguinho-e-lulinha","avine-vinny","andre-novaes"]),
+
+  ev("aj08","Arraiá do Povo — Tarcísio do Acordeon","arraia-do-povo-2026-06-06","2026-06-06",true,
+    "Sábado com Tarcísio do Acordeon e Guilherme Dantas na Orla.",
+    ["zueiroes-do-forro","guilherme-dantas","duas-paixoes","tarcisio-do-acordeon","dudu-moral"]),
+
+  ev("aj09","Arraiá do Povo — Magníficos","arraia-do-povo-2026-06-07","2026-06-07",false,
+    "Domingo de forró clássico com Dorgival Dantas e Magníficos.",
+    ["flor-de-maracuja","dorgival-dantas","magnificos","elton-mota"]),
+
+  ev("aj10","Arraiá do Povo — Mikael Santos","arraia-do-povo-2026-06-09","2026-06-09",false,
+    "Terça com Mikael Santos, Devinho Novaes e Unha Pintada.",
+    ["unha-pintada","devinho-novaes","mikael-santos","eve-sandes"]),
+
+  ev("aj11","Arraiá do Povo — João Gomes e Nattan","arraia-do-povo-2026-06-10","2026-06-10",true,
+    "Quarta com a dupla do momento: João Gomes e Nattan.",
+    ["igor-ativado","joao-gomes","nattan","alisson-lima"]),
+
+  ev("aj12","Arraiá do Povo — Simone Mendes","arraia-do-povo-2026-06-11","2026-06-11",true,
+    "Quinta com Simone Mendes e Samyra Show.",
+    ["nineia-oliveira","samyra-show","simone-mendes","larissa-costa"]),
+
+  ev("aj13","Arraiá do Povo — Zé Vaqueiro","arraia-do-povo-2026-06-12","2026-06-12",true,
+    "Sexta com Zé Vaqueiro, Falamansa e Gil Mendes.",
+    ["quarto-de-milha","falamansa","ze-vaqueiro","gil-mendes","netto-ventura"]),
+
+  ev("aj14","Arraiá do Povo — Mastruz com Leite","arraia-do-povo-2026-06-13","2026-06-13",false,
+    "Sábado de forró raiz com Mastruz com Leite e Raí Saia Rodada.",
+    ["jogo-do-brasil","mastruz-com-leite","rai-saia-rodada","nuzio-medeiros","cartas-de-taro"]),
+
+  ev("aj15","Arraiá do Povo — Zé Cantor","arraia-do-povo-2026-06-14","2026-06-14",false,
+    "Domingo de forró nordestino com Zé Cantor e Batista Lima.",
+    ["erivaldo-de-carira","batista-lima","ze-cantor","raio-da-silibrina"]),
+
+  ev("aj16","Arraiá do Povo — Heitor Costa","arraia-do-povo-2026-06-16","2026-06-16",false,
+    "Terça com Heitor Costa, Silvano Sales e Nadson o Ferinha.",
+    ["nadson-o-ferinha","silvano-sales","heitor-costa","heitor-santos"]),
+
+  ev("aj17","Arraiá do Povo — Limão com Mel","arraia-do-povo-2026-06-17","2026-06-17",false,
+    "Quarta de forró com Limão com Mel e Cavaleiros do Forró.",
+    ["raniere-gomes","cavaleiros-do-forro","limao-com-mel","vanessa-porto"]),
+
+  ev("aj18","Arraiá do Povo — Solange Almeida","arraia-do-povo-2026-06-18","2026-06-18",false,
+    "Quinta com Solange Almeida e Fernandinha.",
+    ["ju-marques","solange-almeida","fernandinha","bia-brasil"]),
+
+  ev("aj19","Arraiá do Povo — Luan Santana","arraia-do-povo-2026-06-19","2026-06-19",true,
+    "Sexta com Luan Santana, Luan Estilizado e João Bosco e Vinicius.",
+    ["luan-estilizado","jogo-do-brasil","luan-santana","joao-bosco-e-vinicius","ygor-raniere"]),
+
+  ev("aj20","Arraiá do Povo — Filho do Piseiro","arraia-do-povo-2026-06-20","2026-06-20",false,
+    "Sábado com Filho do Piseiro, Yasmin Sensação e Brasas do Forró.",
+    ["maraisa-cantora","brasas-do-forro","yasmin-sensacao","filho-do-piseiro","lucas-castro"]),
+
+  ev("aj21","Arraiá do Povo — Gusttavo Lima","arraia-do-povo-2026-06-21","2026-06-21",true,
+    "Domingo com Gusttavo Lima fechando a noite.",
+    ["marcelo-bala","claudio-ney-e-juliana","gusttavo-lima","franquinho-vaqueiro"]),
+
+  ev("aj22","Arraiá do Povo — Painel de Controle","arraia-do-povo-2026-06-23","2026-06-23",false,
+    "Terça com Painel de Controle, Rey Vaqueiro e Luanzinho Moraes.",
+    ["luanzinho-moraes","fabiano-guimaraes","rey-vaqueiro","painel-de-controle","marcelinho"]),
+
+  ev("aj23","Arraiá do Povo — Matheus e Kauan","arraia-do-povo-2026-06-24","2026-06-24",true,
+    "Noite de São João com Matheus e Kauan, Geraldo Azevedo e Alcymar Monteiro.",
+    ["jogo-do-brasil","alcymar-monteiro","geraldo-azevedo","matheus-e-kauan","danielzinho-jr"]),
+
+  ev("aj24","Arraiá do Povo — Lauana Prado","arraia-do-povo-2026-06-25","2026-06-25",false,
+    "Quinta com Lauana Prado, Taty Girl e Liene Show.",
+    ["liene-show","taty-girl","lauana-prado","tatah-santana"]),
+
+  ev("aj25","Arraiá do Povo — Vitor Fernandes","arraia-do-povo-2026-06-26","2026-06-26",false,
+    "Sexta com Vitor Fernandes, Diego e Victor Hugo.",
+    ["danielzinho-o-kaceteiro","eline-martins","diego-e-victor-hugo","vitor-fernandes","breno-matos"]),
+
+  ev("aj26","Arraiá do Povo — Bruno e Marrone","arraia-do-povo-2026-06-27","2026-06-27",true,
+    "Sábado especial com Bruno e Marrone e Zezo.",
+    ["cuscuz-com-leite","zezo","bruno-e-marrone","klessinha","gardenia-mel"]),
+
+  ev("aj27","Arraiá do Povo — Elba Ramalho e Flávio José","arraia-do-povo-2026-06-28","2026-06-28",true,
+    "Grande encerramento do Arraiá do Povo com Elba Ramalho e Flávio José.",
+    ["pedro-lua","elba-ramalho","flavio-jose","mestrinho","forro-cana-com-limao"]),
+
+  // ══ EVENTOS ESPECIAIS — ARACAJU ═══════════════════════
+  { id:"sp01", nome:"Concurso de Quadrilhas do Gonzagão", slug:"quadrilhas-gonzagao-2026",
+    cidadeSlug:"aracaju", local:"Gonzagão", data:"2026-06-08", horario:"18:00", destaque:false,
+    descricao:"Concurso de Quadrilhas Juninas do Gonzagão, de 8 a 14 de junho. Tradição da festa junina sergipana com grupos disputando em coreografias e indumentárias típicas.",
+    artistas:[] },
+
+  { id:"sp02", nome:"Arrastapé do 18 do Forte", slug:"arrastape-18-do-forte-2026",
+    cidadeSlug:"aracaju", local:"Baixa da Cachorrinha", data:"2026-06-12", horario:"17:00", destaque:false,
+    descricao:"Tradicional Arrastapé do 18 do Forte na Baixa da Cachorrinha, nos dias 12 e 13 de junho. Dança, animação e muita cultura popular.",
+    artistas:[] },
+
+  { id:"sp03", nome:"Concurso de Quadrilhas do Arranca Unha", slug:"quadrilhas-arranca-unha-2026",
+    cidadeSlug:"aracaju", local:"Centro de Criatividade", data:"2026-06-22", horario:"18:00", destaque:false,
+    descricao:"Concurso de Quadrilhas Juninas do Arranca Unha no Centro de Criatividade, de 22 a 28 de junho. Uma das competições mais tradicionais do São João sergipano.",
+    artistas:[] },
+
+  { id:"sp04", nome:"Duelo Final de Quadrilhas", slug:"duelo-final-quadrilhas-2026",
+    cidadeSlug:"aracaju", local:"Vila do Forró", data:"2026-07-02", horario:"18:00", destaque:true,
+    descricao:"O grande Duelo Final de Quadrilhas, na Vila do Forró, no dia 2 de julho. A grande decisão das quadrilhas juninas de Sergipe.",
+    artistas:[] },
+
+  // ══ ARRASTA FÉ — 10 a 12 de Julho ════════════════════
+  ev("af01","Arrasta Fé — Maria Marçal","arrasta-fe-2026-07-10","2026-07-10",false,
+    "Primeira noite do Arrasta Fé na Orla de Aracaju com Maria Marçal e Preto no Branco.",
+    ["rebanhao-carlinhos-felix","maria-marcal","preto-no-branco","renovart-banda"],
+    ADP,"18:00"),
+
+  ev("af02","Arrasta Fé — Padre Fábio de Melo","arrasta-fe-2026-07-11","2026-07-11",true,
+    "Segunda noite do Arrasta Fé com Padre Fábio de Melo e Mano Walter.",
+    ["william-sanfona","padre-fabio-de-melo","mano-walter","diacono-romulo"],
+    ADP,"18:00"),
+
+  ev("af03","Arrasta Fé — Rita Benneditto","arrasta-fe-2026-07-12","2026-07-12",false,
+    "Encerramento do Arrasta Fé com Rita Benneditto e Joia do Couro.",
+    ["afoxe-de-preto","joia-do-couro","rita-benneditto","patota-do-ze"],
+    ADP,"18:00"),
+
+  // ══ OUTRAS CIDADES ════════════════════════════════════
+  { id:"e01", nome:"São João de Estância",        slug:"sao-joao-estancia",    cidadeSlug:"estancia",       local:"Praça da Matriz",      data:"2026-06-22", horario:"18:00", destaque:true,  descricao:"O maior São João do interior sergipano com guerra de espadas e muito forró.", artistas:[{slug:"mastruz-com-leite",ordem:1},{slug:"adelmario-coelho",ordem:2}] },
+  { id:"e02", nome:"São João de Tobias Barreto",  slug:"sao-joao-tobias",      cidadeSlug:"tobias-barreto", local:"Praça Camerino",       data:"2026-06-23", horario:"20:00", destaque:false, descricao:"Forró autêntico no coração do sertão sergipano.", artistas:[{slug:"zelito-miranda",ordem:1},{slug:"conde-do-forro",ordem:2}] },
+  { id:"e03", nome:"Forró de Lagarto",            slug:"forro-lagarto",        cidadeSlug:"lagarto",        local:"Praça Filomeno Hora",  data:"2026-06-24", horario:"19:00", destaque:false, descricao:"Festa junina com shows ao vivo e comidas típicas.", artistas:[{slug:"circulado-de-fulo",ordem:1},{slug:"jonas-esticado",ordem:2}] },
+  { id:"e04", nome:"Arraiá de Itabaiana",         slug:"arraia-itabaiana",     cidadeSlug:"itabaiana",      local:"Parque de Eventos",    data:"2026-06-22", horario:"18:00", destaque:false, descricao:"Grande arraiá na capital do agreste sergipano.", artistas:[{slug:"luan-estilizado",ordem:1},{slug:"flavio-jose",ordem:2}] },
+  { id:"e05", nome:"São João de Simão Dias",      slug:"sao-joao-simao-dias",  cidadeSlug:"simao-dias",     local:"Praça Central",        data:"2026-06-24", horario:"19:00", destaque:false, descricao:"Tradicional festa junina de Simão Dias com quadrilhas e forró.", artistas:[{slug:"mastruz-com-leite",ordem:1}] },
+  { id:"e06", nome:"São João de Propriá",         slug:"sao-joao-propria",     cidadeSlug:"propria",        local:"Praça São Pedro",      data:"2026-06-23", horario:"19:00", destaque:false, descricao:"Festa às margens do Rio São Francisco.", artistas:[{slug:"calcinha-preta",ordem:1},{slug:"zelito-miranda",ordem:2}] },
+  { id:"e07", nome:"Estância — Noite 2",          slug:"estancia-noite-2",     cidadeSlug:"estancia",       local:"Praça da Matriz",      data:"2026-06-24", horario:"19:00", destaque:false, descricao:"Segunda noite de São João em Estância.", artistas:[{slug:"wesley-safadao",ordem:1},{slug:"estakazero",ordem:2}] },
+];
+
+/* ═══════════════════════════════════════════════════════════
+   HELPERS
+═══════════════════════════════════════════════════════════ */
+const MESES = ["Janeiro","Fevereiro","Março","Abril","Maio","Junho","Julho","Agosto","Setembro","Outubro","Novembro","Dezembro"];
+const DIAS = ["Dom","Seg","Ter","Qua","Qui","Sex","Sáb"];
+
+const esc = s => String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+
+function formatData(s) { const [y,m,d]=s.split('-').map(Number); return `${d} de ${MESES[m-1]}`; }
+function formatDataCurta(s) { const dt=new Date(s+'T12:00:00'); return {dia:dt.getDate(),dow:DIAS[dt.getDay()]}; }
+
+const getCidade   = slug => cidades.find(c=>c.slug===slug);
+const getEvento   = slug => eventos.find(e=>e.slug===slug);
+const getArtista  = slug => artistas.find(a=>a.slug===slug);
+const getLocal    = nome => locais.find(l=>l.nome===nome);
+const getArtistas = ev   => [...ev.artistas].sort((a,b)=>a.ordem-b.ordem).map(a=>getArtista(a.slug)?.nome).filter(Boolean);
+const eventosByCidade = slug => eventos.filter(e=>e.cidadeSlug===slug).sort((a,b)=>a.data.localeCompare(b.data)||a.horario.localeCompare(b.horario));
+const eventosByArtista= slug => eventos.filter(e=>e.artistas.some(a=>a.slug===slug));
+const datasOf     = slug => [...new Set(eventosByCidade(slug).map(e=>e.data))].sort();
+const eventosHoje = () => eventos.filter(e=>e.data===HOJE);
+
+/* ═══════════════════════════════════════════════════════════
+   SVG ICONS
+═══════════════════════════════════════════════════════════ */
+const ic = {
+  home:     `<svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>`,
+  calendar: `<svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>`,
+  map:      `<svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/></svg>`,
+  search:   `<svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>`,
+  pin:      `<svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 1 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>`,
+  pinMd:    `<svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 1 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>`,
+  clock:    `<svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>`,
+  music:    `<svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>`,
+  musicLg:  `<svg width="32" height="32" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>`,
+  left:     `<svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>`,
+  chev:     `<svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>`,
+  star:     `<svg width="10" height="10" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>`,
+  flame:    `<svg width="36" height="36" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg>`,
+  external: `<svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>`,
+  share:    `<svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>`,
+  x:        `<svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>`,
+  calDays:  `<svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><rect x="8" y="14" width="3" height="3" rx="1" fill="currentColor" stroke="none"/><rect x="13" y="14" width="3" height="3" rx="1" fill="currentColor" stroke="none"/></svg>`,
+  whatsapp: `<svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg>`,
+};
+
+/* ═══════════════════════════════════════════════════════════
+   BANDEIRINHAS SVG
+═══════════════════════════════════════════════════════════ */
+function bandeirinhas(width = 2000) {
+  const colors = ['#DC2626','#F59E0B','#16A34A','#2563EB','#7C3AED','#EA580C','#EC4899','#0891B2'];
+  const FW = 30, FH = 20;
+  const n = Math.ceil(width / FW) + 2;
+  const total = n * FW;
+  let d = `<line x1="0" y1="3" x2="${total}" y2="3" stroke="rgba(255,255,255,.25)" stroke-width="1.5"/>`;
+  for(let i=0;i<n;i++){
+    const x=i*FW; const c=colors[i%colors.length];
+    d+=`<polygon points="${x+1},0 ${x+FW-1},0 ${x+FW/2},${FH}" fill="${c}" opacity=".9"/>`;
+  }
+  return `<svg xmlns="http://www.w3.org/2000/svg" width="${total}" height="${FH}" style="display:block;width:100%;height:${FH}px" preserveAspectRatio="none">${d}</svg>`;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   ROUTER & STATE
+═══════════════════════════════════════════════════════════ */
+let S = {
+  // route state
+  dateFilter: null,
+  cityFilter: 'todas',
+  calOpen: false,
+  citySheetOpen: false,
+  calMonth: 5,
+  calYear: 2026,
+  searchOpen: false,
+  searchQ: '',
+  // active bottom nav (home | hoje | cidades)
+  tab: 'home',
+  // per-city date filter
+  cityDates: {},
+};
+
+function getRoute() {
+  const h = location.hash.replace('#','') || '/';
+  if(h==='/') return {page:'home'};
+  let m;
+  if((m=h.match(/^\/cidade\/(.+)/))) return {page:'cidade',slug:m[1]};
+  if((m=h.match(/^\/evento\/(.+)/))) return {page:'evento',slug:m[1]};
+  if((m=h.match(/^\/artista\/(.+)/))) return {page:'artista',slug:m[1]};
+  if(h==='/cidades') return {page:'cidades'};
+  return {page:'home'};
+}
+function go(path) { location.hash=path; }
+
+/* ═══════════════════════════════════════════════════════════
+   RENDER ENGINE
+═══════════════════════════════════════════════════════════ */
+function render() {
+  const route = getRoute();
+  const root = document.getElementById('root');
+
+  // Update bottom nav tab from route
+  if(route.page==='cidades') S.tab='cidades';
+  else if(route.page==='home') {/* keep as is */}
+
+  const hoje = eventosHoje();
+
+  root.innerHTML = `
+    ${renderHeader()}
+    <main id="page-content" class="page-enter">
+      ${renderPage(route)}
+    </main>
+    ${renderBottomNav(route, hoje.length)}
+    ${renderSearchOverlay()}
+    <div id="sheetOverlay" class="sheet-overlay"></div>
+    <div id="calSheet" class="bottom-sheet" role="dialog" aria-label="Escolher data"></div>
+    <div id="citySheet" class="bottom-sheet" role="dialog" aria-label="Escolher cidade"></div>
+  `;
+
+  attachAll(route);
+  updateSheets();
+}
+
+/* ── HEADER ─────────────────────────────────────────────── */
+function renderHeader() {
+  return `
+  <header class="site-header">
+    <div class="bandeirinhas-strip" aria-hidden="true">${bandeirinhas()}</div>
+    <div class="header-inner">
+      <div class="logo-area" onclick="go('/');S.tab='home';render();" style="cursor:pointer" role="button" tabindex="0" aria-label="Ir para início">
+        <img src="logo-saojoao-t.png" alt="São João de Sergipe 2026" onerror="this.src='logo-saojoao.png'" />
+        <span class="logo-fallback">São João SE 2026</span>
+      </div>
+      <div class="header-actions">
+        <button class="hbtn" id="hSearchBtn" aria-label="Abrir busca">${ic.search}</button>
+      </div>
+    </div>
+  </header>`;
+}
+
+/* ── BOTTOM NAV ─────────────────────────────────────────── */
+function renderBottomNav(route, hojeCount) {
+  const tab = S.tab;
+  const isHome    = (route.page==='home'&&tab==='home');
+  const isHoje    = (route.page==='home'&&tab==='hoje');
+  const isCidades = (route.page==='cidades'||tab==='cidades');
+  return `
+  <nav class="bottom-nav" aria-label="Navegação principal">
+    <button class="bnav-item ${isHome?'active':''}" id="bnav-home" aria-label="Todos os eventos">
+      ${ic.home}
+      <span class="bnav-label">Eventos</span>
+    </button>
+    <button class="bnav-item ${isHoje?'active':''}" id="bnav-hoje" aria-label="Eventos de hoje — ${hojeCount} ${hojeCount===1?'evento':'eventos'}">
+      ${ic.calendar}
+      ${hojeCount>0?`<span class="bnav-badge">${hojeCount}</span>`:''}
+      <span class="bnav-label">Hoje</span>
+    </button>
+    <button class="bnav-item ${isCidades?'active':''}" id="bnav-cidades" aria-label="Cidades">
+      ${ic.map}
+      <span class="bnav-label">Cidades</span>
+    </button>
+    <button class="bnav-item" id="bnav-buscar" aria-label="Buscar">
+      ${ic.search}
+      <span class="bnav-label">Buscar</span>
+    </button>
+  </nav>`;
+}
+
+/* ── SEARCH OVERLAY ─────────────────────────────────────── */
+function renderSearchOverlay() {
+  const q = S.searchQ.trim().toLowerCase();
+  let resultsHtml = '';
+
+  if(!q) {
+    resultsHtml = `<div class="search-placeholder">
+      <div>${ic.search}</div>
+      <p>Pesquise por artistas, cidades ou eventos</p>
+    </div>`;
+  } else {
+    const evts = eventos.filter(e=>e.nome.toLowerCase().includes(q));
+    const arts = artistas.filter(a=>a.nome.toLowerCase().includes(q));
+    const cids = cidades.filter(c=>c.nome.toLowerCase().includes(q));
+    const any = evts.length||arts.length||cids.length;
+
+    if(!any) resultsHtml = `<div class="search-empty">Nenhum resultado para <strong>"${esc(S.searchQ)}"</strong></div>`;
+    else {
+      if(cids.length) resultsHtml += `<div class="search-section-title">Cidades</div><div>${cids.map(c=>`<span class="search-tag" data-goto="/cidade/${c.slug}">${ic.pinMd} ${esc(c.nome)}</span>`).join('')}</div>`;
+      if(arts.length) resultsHtml += `<div class="search-section-title">Artistas</div><div>${arts.map(a=>`<span class="search-tag" data-goto="/artista/${a.slug}">${ic.music} ${esc(a.nome)}</span>`).join('')}</div>`;
+      if(evts.length) {
+        resultsHtml += `<div class="search-section-title">Eventos</div>`;
+        resultsHtml += evts.map(e=>`
+          <div class="search-event-card" data-goto="/evento/${e.slug}">
+            <div class="search-event-name">${esc(e.nome)}</div>
+            <div class="search-event-meta">${formatData(e.data)} · ${e.horario} · ${getCidade(e.cidadeSlug)?.nome||''}</div>
+          </div>`).join('');
+      }
+    }
+  }
+
+  return `
+  <div class="search-overlay ${S.searchOpen?'open':''}" role="dialog" aria-modal="true" aria-label="Busca">
+    <div class="search-overlay-bar">
+      <input class="search-overlay-input" id="searchInput" type="search" placeholder="Buscar artista, cidade, evento..." value="${esc(S.searchQ)}" autocomplete="off" />
+      <button class="search-close" id="searchClose">Fechar</button>
+    </div>
+    <div class="search-results">${resultsHtml}</div>
+  </div>`;
+}
+
+/* ── PAGE ROUTER ────────────────────────────────────────── */
+function renderPage(route) {
+  switch(route.page) {
+    case 'home':    return renderHome();
+    case 'cidades': return renderCidades();
+    case 'cidade':  return renderCidade(route.slug);
+    case 'evento':  return renderEvento(route.slug);
+    case 'artista': return renderArtista(route.slug);
+    default:        return renderHome();
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   HOME PAGE
+═══════════════════════════════════════════════════════════ */
+function renderHome() {
+  const showHoje = S.tab === 'hoje';
+
+  // Compute filtered events
+  let filtered = [...eventos];
+  if(showHoje) {
+    filtered = filtered.filter(e=>e.data===HOJE);
+  } else {
+    if(S.dateFilter) filtered = filtered.filter(e=>e.data===S.dateFilter);
+    if(S.cityFilter!=='todas') filtered = filtered.filter(e=>e.cidadeSlug===S.cityFilter);
+  }
+  filtered.sort((a,b)=>a.data.localeCompare(b.data)||a.horario.localeCompare(b.horario));
+
+  // Group by date
+  const byDate = {};
+  filtered.forEach(e=>{ if(!byDate[e.data]) byDate[e.data]=[]; byDate[e.data].push(e); });
+  const groups = Object.entries(byDate).sort(([a],[b])=>a.localeCompare(b));
+
+  const hoje = eventosHoje();
+  const datasComEvento = new Set(eventos.map(e=>e.data));
+
+  const showHeroHoje = !showHoje && hoje.length>0;
+
+  return `
+  <!-- HERO -->
+  <section class="hero">
+    <img class="hero-img" src="hero-banner-saojoao.png" alt="São João de Sergipe 2026"
+      onerror="this.style.display='none';document.getElementById('hero-fb').style.display='block'" />
+    <div id="hero-fb" style="display:none;height:240px;background:linear-gradient(135deg,#1C0A00,#3D1506)"></div>
+    <div class="hero-overlay" aria-hidden="true"></div>
+    <div class="hero-content">
+      <p class="hero-eyebrow">${ic.flame} Guia Oficial</p>
+      <h1 class="hero-title">São João de Sergipe 2026</h1>
+      <span class="hero-date-badge">${ic.calendar} 29 de maio até 12 de julho</span>
+    </div>
+  </section>
+
+  <!-- HOJE SECTION (when not in "hoje" tab mode) -->
+  ${showHeroHoje ? `
+  <section class="hoje-section">
+    <div class="container">
+      <p class="hoje-eyebrow">
+        <span class="pulse-dot" aria-hidden="true"></span>
+        Acontecendo hoje
+      </p>
+      <h2 class="hoje-title">Programação de Hoje</h2>
+      <div class="hoje-cards">
+        ${hoje.map(e=>renderHojeCard(e)).join('')}
+      </div>
+    </div>
+  </section>` : ''}
+
+  <!-- FILTERS (only in "Eventos" tab) -->
+  ${!showHoje ? `
+  <div class="filter-strip">
+    <div class="container">
+      <div class="filter-inner">
+        ${renderDateChip()}
+        ${S.dateFilter ? `<button class="chip-x" id="clearDate" aria-label="Limpar filtro de data">${ic.x}</button>` : ''}
+        ${renderCityChip()}
+        ${(S.dateFilter||S.cityFilter!=='todas') ? `<span class="filter-count">${filtered.length} evento${filtered.length!==1?'s':''}</span>` : ''}
+      </div>
+    </div>
+  </div>` : ''}
+
+  <!-- EVENTS LIST -->
+  <div class="container section">
+    ${groups.length===0 ? `
+      <div class="empty-state">
+        <div style="color:var(--primary)">${ic.flame}</div>
+        <p>Nenhum evento com esses filtros.</p>
+      </div>` :
+      groups.map(([data, evts])=>`
+        <div class="date-group">
+          <div class="date-heading">
+            <span style="color:var(--primary)">${ic.calendar}</span>
+            <span class="date-pill">${formatData(data)}</span>
+            ${data===HOJE ? `<span class="badge badge-hoje">Hoje</span>` : ''}
+            <span class="badge badge-muted">${evts.length} evento${evts.length>1?'s':''}</span>
+          </div>
+          <div class="events-grid">
+            ${evts.map(e=>renderEvCard(e)).join('')}
+          </div>
+        </div>
+      `).join('')
+    }
+  </div>
+
+  <!-- EXPLORE CIDADES -->
+  ${!showHoje ? `
+  <section class="explore-section">
+    <div class="container">
+      <div class="explore-head-premium">
+        <div class="explore-icon-wrapper">${ic.pinMd}</div>
+        <h2 class="sec-title">Explore por Cidade</h2>
+        <p class="explore-subtitle">Descubra a programação nos principais polos juninos de Sergipe</p>
+      </div>
+      <div class="cities-grid">
+        ${cidades.map(c=>{
+          const cnt = eventos.filter(e=>e.cidadeSlug===c.slug).length;
+          if(!cnt) return '';
+          return `<div class="city-card" onclick="go('/cidade/${c.slug}')" role="button" tabindex="0" aria-label="${esc(c.nome)}, ${cnt} eventos">
+            <span class="city-icon">${ic.pinMd}</span>
+            <span class="city-name">${esc(c.nome)}</span>
+            <span class="city-count">${cnt} evento${cnt>1?'s':''}</span>
+          </div>`;
+        }).join('')}
+      </div>
+    </div>
+  </section>` : ''}
+  `;
+}
+
+/* ── Hoje card (dark style) ─────────────────────────────── */
+function renderHojeCard(e) {
+  const nomes = getArtistas(e);
+  const cidade = getCidade(e.cidadeSlug);
+  return `
+  <div class="hoje-card" onclick="go('/evento/${e.slug}')" role="button" tabindex="0" aria-label="${esc(e.nome)}">
+    ${e.destaque?'<div class="destaque-glow" aria-hidden="true"></div>':''}
+    <div class="hoje-card-time">${ic.clock} ${e.horario}</div>
+    <div class="hoje-card-name">${esc(e.nome)}</div>
+    <div class="hoje-card-city">${ic.pin} ${esc(cidade?.nome||'')}</div>
+    ${nomes.length?`<div class="hoje-card-artists">${nomes.map(n=>`<span class="artist-pill">${esc(n)}</span>`).join('')}</div>`:''}
+  </div>`;
+}
+
+/* ── Event card ─────────────────────────────────────────── */
+function renderEvCard(e) {
+  const cidade = getCidade(e.cidadeSlug);
+  const nomes = getArtistas(e);
+  return `
+  <div class="ev-card" onclick="go('/evento/${e.slug}')" role="button" tabindex="0" aria-label="${esc(e.nome)}, ${formatData(e.data)} às ${e.horario}">
+    <div class="ev-card-top-bar ${e.destaque?'destaque':''}"></div>
+    <div class="ev-card-body">
+      <div class="ev-card-head">
+        <h3 class="ev-name">${esc(e.nome)}</h3>
+        ${e.destaque?`<span class="badge badge-destaque" style="flex-shrink:0">${ic.star} Destaque</span>`:''}
+      </div>
+      <div class="ev-meta">
+        ${cidade?`<span class="ev-meta-item">${ic.pin} ${esc(cidade.nome)}</span>`:''}
+        <span class="ev-meta-item">${ic.clock} ${e.horario}</span>
+      </div>
+    </div>
+    ${nomes.length?`<div class="ev-artists">${nomes.map(n=>`<span class="ev-artist-tag">${esc(n)}</span>`).join('')}</div>`:''}
+  </div>`;
+}
+
+/* ── Date chip (só o botão — popup virou bottom sheet) ───── */
+function renderDateChip() {
+  const label = S.dateFilter
+    ? (()=>{ const [y,m,d]=S.dateFilter.split('-').map(Number); return `${d} de ${MESES[m-1]}`; })()
+    : 'Escolher data';
+  return `<button class="chip ${S.dateFilter?'on':''}" id="dateChip" aria-haspopup="dialog">
+    ${ic.calDays} ${label}
+  </button>`;
+}
+
+/* ── City chip (substitui <select> nativo) ───────────────── */
+function renderCityChip() {
+  const nome = S.cityFilter==='todas'
+    ? 'Todas as cidades'
+    : (cidades.find(c=>c.slug===S.cityFilter)?.nome || 'Todas as cidades');
+  return `<button class="chip ${S.cityFilter!=='todas'?'on':''}" id="cityChip" aria-haspopup="dialog">
+    ${ic.pin} ${nome}
+  </button>`;
+}
+
+function renderCalendar(datasComEvento) {
+  const y=S.calYear, m=S.calMonth;
+  const first=new Date(y,m,1).getDay();
+  const days=new Date(y,m+1,0).getDate();
+  let cells = ['D','S','T','Q','Q','S','S'].map(d=>`<div class="cal-dow">${d}</div>`).join('');
+  for(let i=0;i<first;i++) cells+=`<div class="cal-day empty"></div>`;
+  for(let d=1;d<=days;d++){
+    const ds=`${y}-${String(m+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+    const hasEv=datasComEvento.has(ds), isSel=S.dateFilter===ds;
+    cells+=`<div class="cal-day ${hasEv?'has-ev':''} ${isSel?'sel':''}" data-date="${ds}" role="button" tabindex="0" aria-label="${d} de ${MESES[m]}" ${isSel?'aria-pressed="true"':''}>${d}</div>`;
+  }
+  return `
+  <div class="cal-nav-row">
+    <button class="cal-nav-btn" id="calPrev" aria-label="Mês anterior">${ic.left}</button>
+    <span class="cal-month-label">${MESES[m]} ${y}</span>
+    <button class="cal-nav-btn" id="calNext" aria-label="Próximo mês">${ic.chev}</button>
+  </div>
+  <div class="cal-grid">${cells}</div>`;
+}
+
+/* ── Conteúdo da bottom sheet de calendário ─────────────── */
+function renderCalSheetContent(datasComEvento) {
+  return `
+  <div class="sheet-handle"></div>
+  <div class="sheet-head">
+    <span class="sheet-head-title">${ic.calDays} Escolher Data</span>
+    <button class="sheet-close" id="calSheetClose" aria-label="Fechar">${ic.x}</button>
+  </div>
+  ${renderCalendar(datasComEvento)}`;
+}
+
+/* ── Conteúdo da bottom sheet de cidades ────────────────── */
+function renderCitySheetContent() {
+  const check = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>`;
+  const items = [
+    {slug:'todas', nome:'Todas as cidades'},
+    ...cidades
+  ];
+  return `
+  <div class="sheet-handle"></div>
+  <div class="sheet-head">
+    <span class="sheet-head-title">${ic.pin} Escolher Cidade</span>
+    <button class="sheet-close" id="citySheetClose" aria-label="Fechar">${ic.x}</button>
+  </div>
+  <div class="city-sheet-list">
+    ${items.map(c=>`
+    <div class="city-sheet-item ${S.cityFilter===c.slug?'sel':''}" data-city="${c.slug}">
+      <span>${esc(c.nome)}</span>
+      ${S.cityFilter===c.slug?`<span class="city-check">${check}</span>`:''}
+    </div>`).join('')}
+  </div>`;
+}
+
+/* ── Atualiza as bottom sheets no DOM ───────────────────── */
+function updateSheets() {
+  const datasComEvento = new Set(eventos.map(e=>e.data));
+  const overlay = q('#sheetOverlay');
+  const calSheet = q('#calSheet');
+  const citySheet = q('#citySheet');
+  if(!overlay || !calSheet || !citySheet) return;
+
+  const anyOpen = S.calOpen || S.citySheetOpen;
+  overlay.className = 'sheet-overlay' + (anyOpen?' open':'');
+  calSheet.className = 'bottom-sheet' + (S.calOpen?' open':'');
+  citySheet.className = 'bottom-sheet' + (S.citySheetOpen?' open':'');
+
+  calSheet.innerHTML = renderCalSheetContent(datasComEvento);
+  citySheet.innerHTML = renderCitySheetContent();
+
+  attachSheetEvents();
+}
+
+/* ── Eventos das bottom sheets ──────────────────────────── */
+function attachSheetEvents() {
+  // Fechar ao clicar no overlay
+  q('#sheetOverlay')?.addEventListener('click',()=>{
+    S.calOpen=false; S.citySheetOpen=false; updateSheets(); updateFilterChips();
+  });
+  // Botões de fechar
+  q('#calSheetClose')?.addEventListener('click',()=>{ S.calOpen=false; updateSheets(); updateFilterChips(); });
+  q('#citySheetClose')?.addEventListener('click',()=>{ S.citySheetOpen=false; updateSheets(); updateFilterChips(); });
+  // Navegação de mês
+  q('#calPrev')?.addEventListener('click',()=>{ S.calMonth--; if(S.calMonth<0){S.calMonth=11;S.calYear--;} updateSheets(); });
+  q('#calNext')?.addEventListener('click',()=>{ S.calMonth++; if(S.calMonth>11){S.calMonth=0;S.calYear++;} updateSheets(); });
+  // Selecionar dia
+  qq('.cal-day[data-date]').forEach(el=>{
+    el.addEventListener('click',()=>{ const d=el.dataset.date; S.dateFilter=S.dateFilter===d?null:d; S.calOpen=false; render(); });
+  });
+  // Selecionar cidade
+  qq('.city-sheet-item[data-city]').forEach(el=>{
+    el.addEventListener('click',()=>{ S.cityFilter=el.dataset.city; S.citySheetOpen=false; render(); });
+  });
+}
+
+/* ── Atualiza apenas os chips do filter strip ────────────── */
+function updateFilterChips() {
+  const dc = q('#dateChip');
+  if(dc) {
+    const label = S.dateFilter
+      ? (()=>{ const [y,m,d]=S.dateFilter.split('-').map(Number); return `${d} de ${MESES[m-1]}`; })()
+      : 'Escolher data';
+    dc.className = 'chip' + (S.dateFilter?' on':'');
+    dc.innerHTML = `${ic.calDays} ${label}`;
+  }
+  const cc = q('#cityChip');
+  if(cc) {
+    const nome = S.cityFilter==='todas' ? 'Todas as cidades' : (cidades.find(c=>c.slug===S.cityFilter)?.nome||'Todas as cidades');
+    cc.className = 'chip' + (S.cityFilter!=='todas'?' on':'');
+    cc.innerHTML = `${ic.pin} ${nome}`;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   CIDADES PAGE
+═══════════════════════════════════════════════════════════ */
+function renderCidades() {
+  return `
+  <section class="page-hero">
+    <h1 class="page-hero-title">${ic.map} Cidades</h1>
+    <p class="page-hero-sub">Escolha a cidade e veja a programação completa</p>
+  </section>
+  <div class="container section" style="padding-bottom:2rem">
+    <div class="cities-grid">
+      ${cidades.map(c=>{
+        const cnt = eventos.filter(e=>e.cidadeSlug===c.slug).length;
+        return `<div class="city-card" onclick="go('/cidade/${c.slug}')" role="button" tabindex="0" aria-label="${esc(c.nome)}, ${cnt} eventos">
+          <span class="city-icon">${ic.pinMd}</span>
+          <span class="city-name">${esc(c.nome)}</span>
+          <span class="city-count">${cnt||'Sem'} evento${cnt!==1?'s':''}</span>
+        </div>`;
+      }).join('')}
+    </div>
+  </div>`;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   CIDADE PAGE
+═══════════════════════════════════════════════════════════ */
+function renderCidade(slug) {
+  const cidade = getCidade(slug);
+  if(!cidade) return notFound('Cidade não encontrada.');
+
+  const todos = eventosByCidade(slug);
+  const datas = datasOf(slug);
+  const sel = S.cityDates[slug] || null;
+  const filtered = sel ? todos.filter(e=>e.data===sel) : todos;
+
+  const byDate = {};
+  filtered.forEach(e=>{ if(!byDate[e.data]) byDate[e.data]=[]; byDate[e.data].push(e); });
+  const groups = Object.entries(byDate).sort(([a],[b])=>a.localeCompare(b));
+
+  const cnts = {};
+  todos.forEach(e=>{ cnts[e.data]=(cnts[e.data]||0)+1; });
+
+  return `
+  <section class="page-hero">
+    <button class="back-btn-light page-hero-back" onclick="history.back()" aria-label="Voltar">
+      ${ic.left} Voltar
+    </button>
+    <h1 class="page-hero-title">${ic.pin} ${esc(cidade.nome)}</h1>
+    <p class="page-hero-sub">${todos.length} evento${todos.length!==1?'s':''} programados</p>
+  </section>
+
+  <!-- DAY PILLS -->
+  <div class="day-pills" id="dayPills" aria-label="Filtrar por data">
+    <button class="day-pill ${!sel?'active':''}" data-day="" aria-pressed="${!sel}">
+      <span class="dp-dow">Todos</span>
+      <span class="dp-num" style="font-size:1rem">os dias</span>
+    </button>
+    ${datas.map(d=>{
+      const {dia,dow}=formatDataCurta(d);
+      const isHoje=d===HOJE;
+      return `<button class="day-pill ${sel===d?'active':''}" data-day="${d}" aria-pressed="${sel===d}" aria-label="${dow} dia ${dia}${isHoje?' (hoje)':''}">
+        <span class="dp-dow">${dow}${isHoje?' ·':''}</span>
+        <span class="dp-num">${dia}</span>
+        <span class="dp-cnt">${cnts[d]||0} evt</span>
+      </button>`;
+    }).join('')}
+  </div>
+
+  <!-- EVENTS -->
+  <div class="container section" style="padding-bottom:2rem">
+    ${groups.length===0 ? `
+      <div class="empty-state">
+        <div style="color:var(--primary)">${ic.flame}</div>
+        <p>Nenhum evento nesta data.</p>
+        <button class="back-btn" style="margin:0.875rem auto 0" onclick="S.cityDates['${slug}']=null;render()">Ver todos os dias</button>
+      </div>` :
+      groups.map(([data,evts])=>`
+        <div class="date-group">
+          <div class="date-sticky-header">
+            ${formatData(data)} ${data===HOJE?'<span class="badge badge-hoje" style="margin-left:.5rem">Hoje</span>':''}
+          </div>
+          <div class="events-grid">
+            ${evts.map(e=>renderEvCard(e)).join('')}
+          </div>
+        </div>
+      `).join('')
+    }
+  </div>`;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   EVENTO PAGE
+═══════════════════════════════════════════════════════════ */
+function renderEvento(slug) {
+  const e = getEvento(slug);
+  if(!e) return notFound('Evento não encontrado.');
+
+  const cidade = getCidade(e.cidadeSlug);
+  const local  = getLocal(e.local);
+  const lineup = [...e.artistas].sort((a,b)=>a.ordem-b.ordem).map(a=>({...a, art:getArtista(a.slug)}));
+
+  const mapsUrl = local
+    ? `https://www.google.com/maps/search/?api=1&query=${local.lat},${local.lng}`
+    : `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(e.local+' '+(cidade?.nome||'')+' Sergipe')}`;
+
+  const waText = encodeURIComponent(`🎪 *${e.nome}*\n📅 ${formatData(e.data)} às ${e.horario}\n📍 ${e.local}${cidade?` — ${cidade.nome}`:''}\n\n_São João de Sergipe 2026_`);
+
+  return `
+  <div class="page-hero">
+    <button class="back-btn-light page-hero-back" onclick="history.back()" aria-label="Voltar">
+      ${ic.left} ${cidade?.nome||'Voltar'}
+    </button>
+    <h1 class="page-hero-title" style="font-size:clamp(1.1rem,4vw,1.75rem)">${esc(e.nome)}</h1>
+  </div>
+
+  <div class="container section" style="padding-bottom:2rem">
+    <div class="ev-detail">
+      <div class="ev-detail-card">
+        <div class="ev-detail-hd">
+          ${e.destaque?`<span class="badge badge-destaque" style="margin-bottom:.5rem">${ic.star} Destaque</span><br/>`:''}
+          <h2 class="ev-detail-title">${esc(e.nome)}</h2>
+        </div>
+        <div class="ev-detail-body">
+          <div style="display:flex;flex-direction:column;gap:.625rem">
+            ${cidade?`<div class="info-row">${ic.pin} <span><strong>${esc(e.local)}</strong> — ${esc(cidade.nome)}</span></div>`:''}
+            <div class="info-row">${ic.calendar} <span>${formatData(e.data)}</span></div>
+            <div class="info-row">${ic.clock} <span>${e.horario}</span></div>
+          </div>
+          <hr class="divider"/>
+          <div>
+            <div class="sub-heading">Sobre o evento</div>
+            <p class="descricao">${esc(e.descricao)}</p>
+          </div>
+          ${lineup.length?`
+          <hr class="divider"/>
+          <div>
+            <div class="sub-heading">${ic.music} Line-up</div>
+            <div class="lineup">
+              ${lineup.map((a,i)=>`
+                <div class="lineup-item" onclick="go('/artista/${a.slug}')" role="button" tabindex="0" aria-label="${a.art?.nome||a.slug}">
+                  <span class="lineup-num">${i+1}º</span>
+                  <span class="lineup-name">${esc(a.art?.nome||a.slug)}</span>
+                  <span style="margin-left:auto;color:var(--muted-fg)">${ic.chev}</span>
+                </div>`).join('')}
+            </div>
+          </div>`:''}
+          <hr class="divider"/>
+          <div class="actions-row">
+            <a href="${mapsUrl}" target="_blank" rel="noopener noreferrer" style="flex:1;min-width:120px;display:block">
+              <button class="btn-action btn-maps" style="width:100%" aria-label="Abrir localização no Google Maps">
+                ${ic.external} Como chegar
+              </button>
+            </a>
+            <a href="https://api.whatsapp.com/send?text=${waText}" target="_blank" rel="noopener noreferrer" style="flex:1;min-width:120px;display:block">
+              <button class="btn-action btn-whatsapp" style="width:100%" aria-label="Compartilhar no WhatsApp">
+                ${ic.whatsapp} WhatsApp
+              </button>
+            </a>
+            <button class="btn-action btn-share" id="shareNative" aria-label="Compartilhar" style="flex:0 0 auto;min-width:52px">
+              ${ic.share}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>`;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   ARTISTA PAGE
+═══════════════════════════════════════════════════════════ */
+function renderArtista(slug) {
+  const a = getArtista(slug);
+  if(!a) return notFound('Artista não encontrado.');
+  const evts = eventosByArtista(slug);
+
+  return `
+  <div class="page-hero">
+    <button class="back-btn-light page-hero-back" onclick="history.back()" aria-label="Voltar">
+      ${ic.left} Voltar
+    </button>
+    <h1 class="page-hero-title">${ic.music} ${esc(a.nome)}</h1>
+  </div>
+
+  <div class="container section" style="padding-bottom:2rem">
+    <div class="artista-detail">
+      <div class="artista-card">
+        <div class="artista-hd">
+          <div class="artista-avatar">${ic.musicLg}</div>
+          <h2 class="artista-title">${esc(a.nome)}</h2>
+          <p class="artista-sub">${evts.length} apresentação${evts.length!==1?'ões':''}</p>
+        </div>
+        <div class="artista-body">
+          <div class="sub-heading">Agenda</div>
+          ${evts.length===0
+            ? `<p class="descricao">Nenhum show cadastrado.</p>`
+            : evts.map(e=>{
+                const cidade=getCidade(e.cidadeSlug);
+                return `<div class="agenda-item" onclick="go('/evento/${e.slug}')" role="button" tabindex="0" aria-label="${esc(e.nome)}">
+                  <div class="agenda-name">${esc(e.nome)}</div>
+                  <div class="agenda-meta">
+                    ${cidade?`<span>${ic.pin} ${esc(cidade.nome)}</span>`:''}
+                    <span>${ic.calendar} ${formatData(e.data)}</span>
+                    <span>${ic.clock} ${e.horario}</span>
+                  </div>
+                </div>`;
+              }).join('')
+          }
+        </div>
+      </div>
+    </div>
+  </div>`;
+}
+
+/* ── NOT FOUND ──────────────────────────────────────────── */
+function notFound(msg) {
+  return `<div class="not-found">
+    <h2>Ops!</h2>
+    <p>${msg}</p>
+    <button class="back-btn" style="margin:1rem auto 0" onclick="go('/')">Voltar ao início</button>
+  </div>`;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   EVENTS & INTERACTIONS
+═══════════════════════════════════════════════════════════ */
+function attachDragToScroll() {
+  const sliders = document.querySelectorAll('.day-pills, .filter-inner, .hoje-cards');
+  sliders.forEach(slider => {
+    let isDown = false, startX, scrollLeft, dragged = false;
+    slider.style.cursor = 'grab';
+    
+    slider.addEventListener('mousedown', (e) => {
+      isDown = true; dragged = false;
+      slider.style.cursor = 'grabbing';
+      startX = e.pageX - slider.offsetLeft;
+      scrollLeft = slider.scrollLeft;
+    });
+    slider.addEventListener('mouseleave', () => { isDown = false; slider.style.cursor = 'grab'; });
+    slider.addEventListener('mouseup', () => { isDown = false; slider.style.cursor = 'grab'; });
+    slider.addEventListener('mousemove', (e) => {
+      if (!isDown) return;
+      e.preventDefault();
+      const x = e.pageX - slider.offsetLeft;
+      const walk = (x - startX) * 2;
+      if (Math.abs(walk) > 5) dragged = true;
+      slider.scrollLeft = scrollLeft - walk;
+    });
+    slider.addEventListener('click', (e) => {
+      if (dragged) {
+        e.preventDefault();
+        e.stopPropagation();
+      }
+    }, true);
+  });
+}
+
+function attachAll(route) {
+  // ── HEADER SEARCH ──
+  q('#hSearchBtn')?.addEventListener('click',()=>{ S.searchOpen=true; render(); setTimeout(()=>q('#searchInput')?.focus(),50); });
+
+  // ── SEARCH OVERLAY ──
+  const si = q('#searchInput');
+  if(si) {
+    si.addEventListener('input', e=>{ S.searchQ=e.target.value; renderSearchPartial(); si.focus(); });
+    si.addEventListener('keydown', e=>{ if(e.key==='Escape'){ S.searchOpen=false; S.searchQ=''; render(); } });
+  }
+  q('#searchClose')?.addEventListener('click',()=>{ S.searchOpen=false; S.searchQ=''; render(); });
+
+  // Search results navigation
+  qq('[data-goto]').forEach(el=>{
+    el.addEventListener('click',()=>{ S.searchOpen=false; S.searchQ=''; go(el.dataset.goto); });
+  });
+
+  // ── BOTTOM NAV ──
+  q('#bnav-home')?.addEventListener('click',()=>{ S.tab='home'; S.dateFilter=null; S.cityFilter='todas'; go('/'); render(); });
+  q('#bnav-hoje')?.addEventListener('click',()=>{ S.tab='hoje'; go('/'); render(); });
+  q('#bnav-cidades')?.addEventListener('click',()=>{ S.tab='cidades'; go('/cidades'); });
+  q('#bnav-buscar')?.addEventListener('click',()=>{ S.searchOpen=true; render(); setTimeout(()=>q('#searchInput')?.focus(),50); });
+
+  // ── FILTER STRIP ──
+  q('#dateChip')?.addEventListener('click',()=>{ S.calOpen=true; S.citySheetOpen=false; updateSheets(); });
+  q('#cityChip')?.addEventListener('click',()=>{ S.citySheetOpen=true; S.calOpen=false; updateSheets(); });
+  q('#clearDate')?.addEventListener('click',()=>{ S.dateFilter=null; render(); });
+
+  // ── DAY PILLS (cidade page) ──
+  if(route.page==='cidade') {
+    qq('.day-pill[data-day]').forEach(btn=>{
+      btn.addEventListener('click',()=>{ S.cityDates[route.slug]=btn.dataset.day||null; render(); });
+    });
+  }
+
+  // ── SHARE (evento page) ──
+  q('#shareNative')?.addEventListener('click',()=>{
+    const e = getEvento(route.slug);
+    if(!e) return;
+    if(navigator.share) navigator.share({title:e.nome, url:location.href});
+    else navigator.clipboard?.writeText(location.href).then(()=>alert('Link copiado!'));
+  });
+
+  // ── Keyboard nav for role=button divs ──
+  qq('[role="button"]').forEach(el=>{
+    if(el.tagName!=='BUTTON' && el.tagName!=='A') {
+      el.addEventListener('keydown', e=>{ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); el.click(); } });
+    }
+  });
+
+  attachDragToScroll();
+  window.scrollTo(0,0);
+}
+
+/* ── Partial re-renders (no full render) ────────────────── */
+// renderFilterStrip mantida como stub — chips agora são estáticos no render()
+// A atualização dos filtros ocorre via render() completo.
+
+function renderSearchPartial() {
+  const overlay = q('.search-overlay');
+  if(!overlay) return;
+  const oldResults = overlay.querySelector('.search-results');
+  if(!oldResults) return;
+
+  const q2 = S.searchQ.trim().toLowerCase();
+  let html = '';
+
+  if(!q2) {
+    html = `<div class="search-placeholder"><div>${ic.search}</div><p>Pesquise por artistas, cidades ou eventos</p></div>`;
+  } else {
+    const evts = eventos.filter(e=>e.nome.toLowerCase().includes(q2));
+    const arts = artistas.filter(a=>a.nome.toLowerCase().includes(q2));
+    const cids = cidades.filter(c=>c.nome.toLowerCase().includes(q2));
+    const any = evts.length||arts.length||cids.length;
+    if(!any) html = `<div class="search-empty">Nenhum resultado para <strong>"${esc(S.searchQ)}"</strong></div>`;
+    else {
+      if(cids.length) html += `<div class="search-section-title">Cidades</div><div>${cids.map(c=>`<span class="search-tag" data-goto="/cidade/${c.slug}">${ic.pinMd} ${esc(c.nome)}</span>`).join('')}</div>`;
+      if(arts.length) html += `<div class="search-section-title">Artistas</div><div>${arts.map(a=>`<span class="search-tag" data-goto="/artista/${a.slug}">${ic.music} ${esc(a.nome)}</span>`).join('')}</div>`;
+      if(evts.length) {
+        html += `<div class="search-section-title">Eventos</div>`;
+        html += evts.map(e=>`<div class="search-event-card" data-goto="/evento/${e.slug}"><div class="search-event-name">${esc(e.nome)}</div><div class="search-event-meta">${formatData(e.data)} · ${e.horario} · ${getCidade(e.cidadeSlug)?.nome||''}</div></div>`).join('');
+      }
+    }
+  }
+  oldResults.innerHTML = html;
+  qq('[data-goto]').forEach(el=>{ el.addEventListener('click',()=>{ S.searchOpen=false; S.searchQ=''; go(el.dataset.goto); }); });
+}
+
+
+/* ── DOM helpers ────────────────────────────────────────── */
+const q  = sel => document.querySelector(sel);
+const qq = sel => document.querySelectorAll(sel);
+
+/* ═══════════════════════════════════════════════════════════
+   BOOTSTRAP
+═══════════════════════════════════════════════════════════ */
+window.addEventListener('hashchange', ()=>render());
+render();
+</script>
+</body>
+</html>
