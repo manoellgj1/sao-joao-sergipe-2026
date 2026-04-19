@@ -193,11 +193,12 @@
     .filter-inner { display: flex; gap: 0.5rem; align-items: center; flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; }
     .filter-inner::-webkit-scrollbar { display: none; }
     .chip {
-      display: inline-flex; align-items: center; gap: 0.3rem;
+      display: inline-flex; align-items: center; justify-content: center; gap: 0.3rem;
       padding: 0.4rem 0.875rem; border-radius: 9999px;
       border: 1.5px solid var(--border); background: var(--card);
       font-size: 0.75rem; font-weight: 800; white-space: nowrap;
       color: var(--text); cursor: pointer; transition: all .2s; flex-shrink: 0;
+      min-width: 152px;
     }
     .chip:hover { border-color: var(--primary); }
     .chip:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
@@ -639,6 +640,11 @@ const locais = [
   { nome:"Baixa da Cachorrinha",          cidadeSlug:"aracaju",       lat:-10.9200, lng:-37.0533 },
   { nome:"Centro de Criatividade",        cidadeSlug:"aracaju",       lat:-10.9186, lng:-37.0567 },
   { nome:"Vila do Forró",                 cidadeSlug:"aracaju",       lat:-10.9375, lng:-37.0333 },
+  { nome:"Teatro Atheneu",                              cidadeSlug:"aracaju", lat:-10.9163, lng:-37.0461 },
+  { nome:"Unit Farolândia - Auditório Bloco D",         cidadeSlug:"aracaju", lat:-11.0121, lng:-37.0567 },
+  { nome:"Praça Acrísio Garcez - Farolândia",           cidadeSlug:"aracaju", lat:-11.0050, lng:-37.0600 },
+  { nome:"Praça Ulisses Guimarães - Santos Dumont",     cidadeSlug:"aracaju", lat:-10.9400, lng:-37.0600 },
+  { nome:"Praça Hilton Lopes - Palco Luiz Gonzaga",     cidadeSlug:"aracaju", lat:-10.9833, lng:-37.0476 },
 ];
 
 const artistas = [
@@ -769,6 +775,44 @@ const artistas = [
   { nome:"Flávio José",                slug:"flavio-jose" },
   { nome:"Mestrinho",                  slug:"mestrinho" },
   { nome:"Forró Cana com Limão",       slug:"forro-cana-com-limao" },
+  // — Forró Caju 2026 —
+  { nome:"Luizinho Calixto",                    slug:"luizinho-calixto" },
+  { nome:"Robertinho dos 8 Baixos",             slug:"robertinho-8-baixos" },
+  { nome:"Orquestra Sanfônica de 8 Baixos",     slug:"orquestra-sanfonica-8-baixos" },
+  { nome:"Sergival",                            slug:"sergival" },
+  { nome:"Casaca de Couro",                     slug:"casaca-de-couro" },
+  { nome:"Trio Nordestino",                     slug:"trio-nordestino" },
+  { nome:"Fulô de Mandacaru",                   slug:"fulo-de-mandacaru" },
+  { nome:"Alceu Valença",                       slug:"alceu-valenca" },
+  { nome:"João da Passarada",                   slug:"joao-da-passarada" },
+  { nome:"Sérgio Lucas",                        slug:"sergio-lucas" },
+  { nome:"Targino Gondim",                      slug:"targino-gondim" },
+  { nome:"Héloa",                               slug:"heloa" },
+  { nome:"Santana O Cantador",                  slug:"santana-o-cantador" },
+  { nome:"Lara Amélia",                         slug:"lara-amelia" },
+  { nome:"Anastácia",                           slug:"anastacia" },
+  { nome:"Waldonys",                            slug:"waldonys" },
+  { nome:"Xotebaião",                           slug:"xotebaiao" },
+  { nome:"Thaís Nogueira",                      slug:"thais-nogueira" },
+  { nome:"Flávio Leandro",                      slug:"flavio-leandro" },
+  { nome:"Del Feliz",                           slug:"del-feliz" },
+  { nome:"Jorge de Altinho",                    slug:"jorge-de-altinho" },
+  { nome:"Luiz Fontineli",                      slug:"luiz-fontineli" },
+  { nome:"Mimi do Acordeon",                    slug:"mimi-do-acordeon" },
+  { nome:"Lourinho do Acordeon",                slug:"lourinho-do-acordeon" },
+  { nome:"Igor Ranieri",                        slug:"igor-ranieri" },
+  { nome:"Léo Foguete",                         slug:"leo-foguete" },
+  { nome:"Matheus Fernandes",                   slug:"matheus-fernandes" },
+  { nome:"Mariana Fagundes",                    slug:"mariana-fagundes" },
+  { nome:"Cidade dos Anjos",                    slug:"cidade-dos-anjos" },
+  { nome:"Baú das Antigas",                     slug:"bau-das-antigas" },
+  { nome:"Silvânia Aquino e Berg Rabelo",        slug:"silvania-aquino-berg-rabelo" },
+  { nome:"Panda",                               slug:"panda" },
+  { nome:"Pablo",                               slug:"pablo" },
+  { nome:"Murilo Huff",                         slug:"murilo-huff" },
+  { nome:"Luciene Melo",                        slug:"luciene-melo" },
+  { nome:"Eric Lande",                          slug:"eric-lande" },
+  { nome:"Antônio Carlos du Aracaju",           slug:"antonio-carlos-du-aracaju" },
   // — Arrasta Fé —
   { nome:"Rebanhão e Carlinhos Félix", slug:"rebanhao-carlinhos-felix" },
   { nome:"Maria Marçal",               slug:"maria-marcal" },
@@ -785,7 +829,10 @@ const artistas = [
 ];
 
 // ── Helpers p/ montar shows ──────────────────────────────
-const ADP = "Praça de Eventos Hilton Lopes"; // venue Arraiá do Povo
+const ADP  = "Praça de Eventos Hilton Lopes"; // venue Arraiá do Povo
+const FC1  = "Praça Acrísio Garcez - Farolândia";        // Forró Caju — fase 1
+const FC2  = "Praça Ulisses Guimarães - Santos Dumont";  // Forró Caju — fase 2
+const FCLG = "Praça Hilton Lopes - Palco Luiz Gonzaga";  // Forró Caju — fase 3
 function ev(id, nome, slug, data, destaque, descricao, arts, local=ADP, horario="19:00") {
   return { id, nome, slug, cidadeSlug:"aracaju", local, data, horario, destaque, descricao, artistas: arts.map((s,i)=>({slug:s,ordem:i+1})) };
 }
@@ -900,6 +947,91 @@ const eventos = [
     "Grande encerramento do Arraiá do Povo com Elba Ramalho e Flávio José.",
     ["pedro-lua","elba-ramalho","flavio-jose","mestrinho","forro-cana-com-limao"]),
 
+  // ══ FORRÓ CAJU 2026 ═══════════════════════════════════
+  // — Fórum do Forró (Maio) —
+  { id:"fc01", nome:"Fórum do Forró — Homenagem a Flávio José", slug:"forum-forro-flavio-jose-2026",
+    cidadeSlug:"aracaju", local:"Teatro Atheneu", data:"2026-05-11", horario:"18:00", destaque:true,
+    descricao:"'Cancioneiro de Resistência: a obra de Flávio José como pilar do forró tradicional nordestino'. Abertura do Fórum do Forró 2026.",
+    artistas:[{slug:"flavio-jose",ordem:1}] },
+
+  { id:"fc02", nome:"Fórum do Forró — 8 Baixos & Sergival", slug:"forum-forro-8-baixos-2026",
+    cidadeSlug:"aracaju", local:"Unit Farolândia - Auditório Bloco D", data:"2026-05-12", horario:"15:00", destaque:false,
+    descricao:"Debates: '8 Baixos: A Origem do Forró' com Luizinho Calixto e Robertinho dos 8 Baixos (mediação Paulo Corrêa); e 'Sergival e as Coisas do Caçuá'. Apresentações artísticas às 19h.",
+    artistas:[{slug:"robertinho-8-baixos",ordem:1},{slug:"orquestra-sanfonica-8-baixos",ordem:2},{slug:"sergival",ordem:3}] },
+
+  // — Forró Caju — Fase 1: Praça Acrísio Garcez (04–06/06) —
+  ev("fc03","Forró Caju — Alceu Valença","forro-caju-2026-06-04","2026-06-04",true,
+    "Noite de forró tradicional com Alceu Valença, Fulô de Mandacaru, Trio Nordestino e Casaca de Couro.",
+    ["casaca-de-couro","trio-nordestino","fulo-de-mandacaru","alceu-valenca","joao-da-passarada"],
+    FC1,"19:00"),
+
+  ev("fc04","Forró Caju — Flávio José","forro-caju-2026-06-05","2026-06-05",true,
+    "Noite especial com Flávio José, Adelmário Coelho, Sérgio Lucas e Targino Gondim.",
+    ["sergival","sergio-lucas","flavio-jose","adelmario-coelho","targino-gondim"],
+    FC1,"19:00"),
+
+  ev("fc05","Forró Caju — Elba Ramalho e Geraldo Azevedo","forro-caju-2026-06-06","2026-06-06",true,
+    "Noite inesquecível com Elba Ramalho e Geraldo Azevedo, mais Santana O Cantador e Pedro Lua.",
+    ["heloa","santana-o-cantador","elba-ramalho","geraldo-azevedo","pedro-lua"],
+    FC1,"19:00"),
+
+  // — Forró Caju — Fase 2: Praça Ulisses Guimarães (12–13/06) —
+  ev("fc06","Forró Caju — Waldonys","forro-caju-2026-06-12-santos-dumont","2026-06-12",false,
+    "Forró no bairro Santos Dumont com Waldonys, Anastácia, Lara Amélia e Xotebaião.",
+    ["lara-amelia","anastacia","waldonys","xotebaiao","thais-nogueira"],
+    FC2,"19:00"),
+
+  ev("fc07","Forró Caju — Jorge de Altinho","forro-caju-2026-06-13-santos-dumont","2026-06-13",false,
+    "Santos Dumont com Jorge de Altinho, Del Feliz, Flávio Leandro e Mimi do Acordeon. Transmissão da Seleção às 19h.",
+    ["jogo-do-brasil","flavio-leandro","del-feliz","jorge-de-altinho","luiz-fontineli","mimi-do-acordeon"],
+    FC2,"19:00"),
+
+  // — Forró Caju — Fase 3: Palco Luiz Gonzaga (20–28/06) —
+  ev("fc08","Forró Caju — Joelma","forro-caju-2026-06-20","2026-06-20",true,
+    "Noite com Joelma no Palco Luiz Gonzaga, mais Taty Girl, Matheus Fernandes e Tatah Santana.",
+    ["lourinho-do-acordeon","taty-girl","joelma","matheus-fernandes","tatah-santana"],
+    FCLG,"19:00"),
+
+  ev("fc09","Forró Caju — Mikael Santos","forro-caju-2026-06-21","2026-06-21",false,
+    "Noite com Mikael Santos, Léo Foguete e Igor Ranieri.",
+    ["igor-ranieri","leo-foguete","mikael-santos","yasmin-sensacao"],
+    FCLG,"19:00"),
+
+  ev("fc10","Forró Caju — Diego e Victor Hugo","forro-caju-2026-06-22","2026-06-22",false,
+    "Noite com Diego e Victor Hugo, Fernandinha e Mariana Fagundes.",
+    ["mariana-fagundes","fernandinha","diego-e-victor-hugo","cidade-dos-anjos"],
+    FCLG,"19:00"),
+
+  ev("fc11","Forró Caju — Simone Mendes","forro-caju-2026-06-23","2026-06-23",true,
+    "Noite com Simone Mendes, Panda, Silvânia Aquino e Berg Rabelo.",
+    ["bau-das-antigas","silvania-aquino-berg-rabelo","panda","simone-mendes","fogo-na-saia"],
+    FCLG,"19:00"),
+
+  ev("fc12","Forró Caju — Zé Vaqueiro","forro-caju-2026-06-24","2026-06-24",true,
+    "Noite com Zé Vaqueiro e Natanzinho Lima. Transmissão da Seleção às 19h.",
+    ["jogo-do-brasil","ze-vaqueiro","seu-desejo","natanzinho-lima","gil-mendes"],
+    FCLG,"19:00"),
+
+  ev("fc13","Forró Caju — Calcinha Preta","forro-caju-2026-06-25","2026-06-25",true,
+    "Noite de forró com Calcinha Preta, Pablo e Mestrinho.",
+    ["erivaldo-de-carira","mestrinho","pablo","calcinha-preta"],
+    FCLG,"19:00"),
+
+  ev("fc14","Forró Caju — Magníficos","forro-caju-2026-06-26","2026-06-26",false,
+    "Noite de forró raiz com Magníficos, Dorgival Dantas e Murilo Huff.",
+    ["forro-brasil","dorgival-dantas","murilo-huff","magnificos"],
+    FCLG,"19:00"),
+
+  ev("fc15","Forró Caju — Wesley Safadão","forro-caju-2026-06-27","2026-06-27",true,
+    "Noite com Wesley Safadão, Mastruz com Leite e Alisson Lima.",
+    ["luciene-melo","eric-lande","wesley-safadao","mastruz-com-leite","alisson-lima"],
+    FCLG,"19:00"),
+
+  ev("fc16","Forró Caju — Solange Almeida","forro-caju-2026-06-28","2026-06-28",false,
+    "Encerramento do Forró Caju com Solange Almeida, Limão com Mel e Antônio Carlos du Aracaju.",
+    ["antonio-carlos-du-aracaju","limao-com-mel","solange-almeida","danielzinho-jr"],
+    FCLG,"19:00"),
+
   // ══ EVENTOS ESPECIAIS — ARACAJU ═══════════════════════
   { id:"sp01", nome:"Concurso de Quadrilhas do Gonzagão", slug:"quadrilhas-gonzagao-2026",
     cidadeSlug:"aracaju", local:"Gonzagão", data:"2026-06-08", horario:"18:00", destaque:false,
@@ -985,6 +1117,7 @@ const ic = {
   chev:     `<svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>`,
   star:     `<svg width="10" height="10" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>`,
   flame:    `<svg width="36" height="36" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg>`,
+  flameSm:  `<svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg>`,
   external: `<svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>`,
   share:    `<svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>`,
   x:        `<svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>`,
@@ -1015,8 +1148,10 @@ let S = {
   // route state
   dateFilter: null,
   cityFilter: 'todas',
+  festaFilter: null,
   calOpen: false,
   citySheetOpen: false,
+  festaSheetOpen: false,
   calMonth: 5,
   calYear: 2026,
   searchOpen: false,
@@ -1026,6 +1161,17 @@ let S = {
   // per-city date filter
   cityDates: {},
 };
+
+const FESTAS = [
+  { nome:"Arraiá do Povo", slug:"arraia-do-povo" },
+  { nome:"Forró Caju",     slug:"forro-caju"     },
+];
+
+function getFestaSlug(ev) {
+  if(ev.id.startsWith('aj')) return 'arraia-do-povo';
+  if(ev.id.startsWith('fc')) return 'forro-caju';
+  return null;
+}
 
 function getRoute() {
   const h = location.hash.replace('#','') || '/';
@@ -1062,6 +1208,7 @@ function render() {
     <div id="sheetOverlay" class="sheet-overlay"></div>
     <div id="calSheet" class="bottom-sheet" role="dialog" aria-label="Escolher data"></div>
     <div id="citySheet" class="bottom-sheet" role="dialog" aria-label="Escolher cidade"></div>
+    <div id="festaSheet" class="bottom-sheet" role="dialog" aria-label="Escolher festa"></div>
   `;
 
   attachAll(route);
@@ -1179,6 +1326,7 @@ function renderHome() {
   } else {
     if(S.dateFilter) filtered = filtered.filter(e=>e.data===S.dateFilter);
     if(S.cityFilter!=='todas') filtered = filtered.filter(e=>e.cidadeSlug===S.cityFilter);
+    if(S.festaFilter) filtered = filtered.filter(e=>getFestaSlug(e)===S.festaFilter);
   }
   filtered.sort((a,b)=>a.data.localeCompare(b.data)||a.horario.localeCompare(b.horario));
 
@@ -1229,7 +1377,8 @@ function renderHome() {
         ${renderDateChip()}
         ${S.dateFilter ? `<button class="chip-x" id="clearDate" aria-label="Limpar filtro de data">${ic.x}</button>` : ''}
         ${renderCityChip()}
-        ${(S.dateFilter||S.cityFilter!=='todas') ? `<span class="filter-count">${filtered.length} evento${filtered.length!==1?'s':''}</span>` : ''}
+        ${renderFestaChip()}
+        ${(S.dateFilter||S.cityFilter!=='todas'||S.festaFilter) ? `<span class="filter-count">${filtered.length} evento${filtered.length!==1?'s':''}</span>` : ''}
       </div>
     </div>
   </div>` : ''}
@@ -1327,6 +1476,16 @@ function renderDateChip() {
   </button>`;
 }
 
+/* ── Festa chip ──────────────────────────────────────────── */
+function renderFestaChip() {
+  const nome = S.festaFilter
+    ? (FESTAS.find(f=>f.slug===S.festaFilter)?.nome || 'Todas as festas')
+    : 'Todas as festas';
+  return `<button class="chip ${S.festaFilter?'on':''}" id="festaChip" aria-haspopup="dialog">
+    ${ic.flameSm} ${nome}
+  </button>`;
+}
+
 /* ── City chip (substitui <select> nativo) ───────────────── */
 function renderCityChip() {
   const nome = S.cityFilter==='todas'
@@ -1368,6 +1527,23 @@ function renderCalSheetContent(datasComEvento) {
   ${renderCalendar(datasComEvento)}`;
 }
 
+/* ── Conteúdo da bottom sheet de festas ─────────────────── */
+function renderFestaSheetContent() {
+  const items = [{slug:null, nome:'Todas as festas'}, ...FESTAS];
+  return `
+  <div class="sheet-handle"></div>
+  <div class="sheet-head">
+    <span class="sheet-head-title">${ic.flameSm} Escolher Festa</span>
+    <button class="sheet-close" id="festaSheetClose" aria-label="Fechar">${ic.x}</button>
+  </div>
+  <div class="city-sheet-list">
+    ${items.map(f=>`
+    <div class="city-sheet-item ${S.festaFilter===(f.slug??null)?'sel':''}" data-festa="${f.slug??'todas'}">
+      <span>${esc(f.nome)}</span>
+    </div>`).join('')}
+  </div>`;
+}
+
 /* ── Conteúdo da bottom sheet de cidades ────────────────── */
 function renderCitySheetContent() {
   const check = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>`;
@@ -1393,18 +1569,21 @@ function renderCitySheetContent() {
 /* ── Atualiza as bottom sheets no DOM ───────────────────── */
 function updateSheets() {
   const datasComEvento = new Set(eventos.map(e=>e.data));
-  const overlay = q('#sheetOverlay');
-  const calSheet = q('#calSheet');
-  const citySheet = q('#citySheet');
-  if(!overlay || !calSheet || !citySheet) return;
+  const overlay    = q('#sheetOverlay');
+  const calSheet   = q('#calSheet');
+  const citySheet  = q('#citySheet');
+  const festaSheet = q('#festaSheet');
+  if(!overlay || !calSheet || !citySheet || !festaSheet) return;
 
-  const anyOpen = S.calOpen || S.citySheetOpen;
-  overlay.className = 'sheet-overlay' + (anyOpen?' open':'');
-  calSheet.className = 'bottom-sheet' + (S.calOpen?' open':'');
-  citySheet.className = 'bottom-sheet' + (S.citySheetOpen?' open':'');
+  const anyOpen = S.calOpen || S.citySheetOpen || S.festaSheetOpen;
+  overlay.className    = 'sheet-overlay' + (anyOpen?' open':'');
+  calSheet.className   = 'bottom-sheet' + (S.calOpen?' open':'');
+  citySheet.className  = 'bottom-sheet' + (S.citySheetOpen?' open':'');
+  festaSheet.className = 'bottom-sheet' + (S.festaSheetOpen?' open':'');
 
-  calSheet.innerHTML = renderCalSheetContent(datasComEvento);
-  citySheet.innerHTML = renderCitySheetContent();
+  calSheet.innerHTML   = renderCalSheetContent(datasComEvento);
+  citySheet.innerHTML  = renderCitySheetContent();
+  festaSheet.innerHTML = renderFestaSheetContent();
 
   attachSheetEvents();
 }
@@ -1413,11 +1592,12 @@ function updateSheets() {
 function attachSheetEvents() {
   // Fechar ao clicar no overlay
   q('#sheetOverlay')?.addEventListener('click',()=>{
-    S.calOpen=false; S.citySheetOpen=false; updateSheets(); updateFilterChips();
+    S.calOpen=false; S.citySheetOpen=false; S.festaSheetOpen=false; updateSheets(); updateFilterChips();
   });
   // Botões de fechar
   q('#calSheetClose')?.addEventListener('click',()=>{ S.calOpen=false; updateSheets(); updateFilterChips(); });
   q('#citySheetClose')?.addEventListener('click',()=>{ S.citySheetOpen=false; updateSheets(); updateFilterChips(); });
+  q('#festaSheetClose')?.addEventListener('click',()=>{ S.festaSheetOpen=false; updateSheets(); updateFilterChips(); });
   // Navegação de mês
   q('#calPrev')?.addEventListener('click',()=>{ S.calMonth--; if(S.calMonth<0){S.calMonth=11;S.calYear--;} updateSheets(); });
   q('#calNext')?.addEventListener('click',()=>{ S.calMonth++; if(S.calMonth>11){S.calMonth=0;S.calYear++;} updateSheets(); });
@@ -1428,6 +1608,14 @@ function attachSheetEvents() {
   // Selecionar cidade
   qq('.city-sheet-item[data-city]').forEach(el=>{
     el.addEventListener('click',()=>{ S.cityFilter=el.dataset.city; S.citySheetOpen=false; render(); });
+  });
+  // Selecionar festa
+  qq('.city-sheet-item[data-festa]').forEach(el=>{
+    el.addEventListener('click',()=>{
+      const v = el.dataset.festa;
+      S.festaFilter = v==='todas' ? null : v;
+      S.festaSheetOpen=false; render();
+    });
   });
 }
 
@@ -1446,6 +1634,12 @@ function updateFilterChips() {
     const nome = S.cityFilter==='todas' ? 'Todas as cidades' : (cidades.find(c=>c.slug===S.cityFilter)?.nome||'Todas as cidades');
     cc.className = 'chip' + (S.cityFilter!=='todas'?' on':'');
     cc.innerHTML = `${ic.pin} ${nome}`;
+  }
+  const fc = q('#festaChip');
+  if(fc) {
+    const nome = S.festaFilter ? (FESTAS.find(f=>f.slug===S.festaFilter)?.nome||'Todas as festas') : 'Todas as festas';
+    fc.className = 'chip' + (S.festaFilter?' on':'');
+    fc.innerHTML = `${ic.flameSm} ${nome}`;
   }
 }
 
@@ -1730,8 +1924,9 @@ function attachAll(route) {
   q('#bnav-buscar')?.addEventListener('click',()=>{ S.searchOpen=true; render(); setTimeout(()=>q('#searchInput')?.focus(),50); });
 
   // ── FILTER STRIP ──
-  q('#dateChip')?.addEventListener('click',()=>{ S.calOpen=true; S.citySheetOpen=false; updateSheets(); });
-  q('#cityChip')?.addEventListener('click',()=>{ S.citySheetOpen=true; S.calOpen=false; updateSheets(); });
+  q('#dateChip')?.addEventListener('click',()=>{ S.calOpen=true; S.citySheetOpen=false; S.festaSheetOpen=false; updateSheets(); });
+  q('#cityChip')?.addEventListener('click',()=>{ S.citySheetOpen=true; S.calOpen=false; S.festaSheetOpen=false; updateSheets(); });
+  q('#festaChip')?.addEventListener('click',()=>{ S.festaSheetOpen=true; S.calOpen=false; S.citySheetOpen=false; updateSheets(); });
   q('#clearDate')?.addEventListener('click',()=>{ S.dateFilter=null; render(); });
 
   // ── DAY PILLS (cidade page) ──
