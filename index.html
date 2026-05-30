@@ -1114,6 +1114,19 @@ let _buscaTimer = null;
 /* ── Feedback (Apps Script -> planilha + email) ── */
 const FEEDBACK_ENDPOINT = 'https://script.google.com/macros/s/AKfycbzeKs572FurP23215NdqT6a4T3bLX6Dans4vfNOyxGavA1BpAH_CIs35qloBRZymEkhzA/exec';
 const FEEDBACK_TOKEN = 'sj26_16f4d63413e5846e2852e940';
+// Nome legível da tela onde a pessoa está (ex: "Cidade: Aracaju"), + rota técnica
+function feedbackPagina(){
+  let label = 'Início';
+  try{
+    const r = getRoute();
+    if(r.page==='cidade'){ const c=getCidade(r.slug); label='Cidade: '+(c?c.nome:r.slug); }
+    else if(r.page==='evento'){ const e=getEvento(r.slug); label='Evento: '+(e?e.nome:r.slug); }
+    else if(r.page==='artista'){ const a=getArtista(r.slug); label='Artista: '+(a?a.nome:r.slug); }
+    else if(r.page==='cidades') label='Lista de cidades';
+    if(S.searchOpen) label='Busca';
+  }catch(_){}
+  return label + ' (' + (location.hash||'/') + ')';
+}
 
 function formatData(s) { const [y,m,d]=s.split('-').map(Number); return `${d} de ${MESES[m-1]}`; }
 function formatDataCurta(s) { const dt=new Date(s+'T12:00:00'); return {dia:dt.getDate(),dow:DIAS[dt.getDay()]}; }
@@ -1710,7 +1723,7 @@ function attachSheetEvents() {
     fd.append('tipo', S.fbTipo);
     fd.append('mensagem', msg);
     fd.append('contato', (q('#fbContato')?.value||'').trim());
-    fd.append('pagina', location.hash || '/');
+    fd.append('pagina', feedbackPagina());
     fd.append('dispositivo', navigator.userAgent);
     try{
       await fetch(FEEDBACK_ENDPOINT, { method:'POST', mode:'no-cors', body: fd });
