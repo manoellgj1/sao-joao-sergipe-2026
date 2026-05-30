@@ -4,6 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>São João de Sergipe 2026</title>
+  <!-- Umami Web Analytics (grátis, cookieless, sem banner LGPD) -->
+  <script defer src="https://cloud.umami.is/script.js" data-website-id="4f63a975-5f52-42a1-a7cf-f079820ad4d6"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;700;800;900&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet" />
   <style>
@@ -1087,6 +1089,11 @@ const DIAS = ["Dom","Seg","Ter","Qua","Qui","Sex","Sáb"];
 
 const esc = s => String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 
+/* ── Analytics (Umami) — no-op até o script da Umami carregar ── */
+function track(name, data){ try{ if(window.umami) window.umami.track(name, data); }catch(_){} }
+let _lastTrackedRoute = null;
+let _buscaTimer = null;
+
 function formatData(s) { const [y,m,d]=s.split('-').map(Number); return `${d} de ${MESES[m-1]}`; }
 function formatDataCurta(s) { const dt=new Date(s+'T12:00:00'); return {dia:dt.getDate(),dow:DIAS[dt.getDay()]}; }
 
@@ -1190,6 +1197,14 @@ function go(path) { location.hash=path; }
 ═══════════════════════════════════════════════════════════ */
 function render() {
   const route = getRoute();
+  // Analytics: dispara 1x por mudança de rota (evita contar re-renders de filtro/busca)
+  const _rk = route.page + (route.slug ? '/' + route.slug : '');
+  if(_rk !== _lastTrackedRoute){
+    _lastTrackedRoute = _rk;
+    if(route.page==='cidade')       track('cidade_vista',  { cidade:  route.slug });
+    else if(route.page==='evento')  track('evento_visto',  { evento:  route.slug });
+    else if(route.page==='artista') track('artista_visto', { artista: route.slug });
+  }
   const root = document.getElementById('root');
 
   // Update bottom nav tab from route
@@ -1603,11 +1618,11 @@ function attachSheetEvents() {
   q('#calNext')?.addEventListener('click',()=>{ S.calMonth++; if(S.calMonth>11){S.calMonth=0;S.calYear++;} updateSheets(); });
   // Selecionar dia
   qq('.cal-day[data-date]').forEach(el=>{
-    el.addEventListener('click',()=>{ const d=el.dataset.date; S.dateFilter=S.dateFilter===d?null:d; S.calOpen=false; render(); });
+    el.addEventListener('click',()=>{ const d=el.dataset.date; S.dateFilter=S.dateFilter===d?null:d; S.calOpen=false; if(S.dateFilter) track('filtro_data',{data:S.dateFilter}); render(); });
   });
   // Selecionar cidade
   qq('.city-sheet-item[data-city]').forEach(el=>{
-    el.addEventListener('click',()=>{ S.cityFilter=el.dataset.city; S.citySheetOpen=false; render(); });
+    el.addEventListener('click',()=>{ S.cityFilter=el.dataset.city; S.citySheetOpen=false; track('filtro_cidade',{cidade:el.dataset.city}); render(); });
   });
   // Selecionar festa
   qq('.city-sheet-item[data-festa]').forEach(el=>{
@@ -1791,12 +1806,12 @@ function renderEvento(slug) {
           </div>`:''}
           <hr class="divider"/>
           <div class="actions-row">
-            <a href="${mapsUrl}" target="_blank" rel="noopener noreferrer" style="flex:1;min-width:120px;display:block">
+            <a href="${mapsUrl}" target="_blank" rel="noopener noreferrer" onclick="track('maps_click',{evento:'${e.slug}'})" style="flex:1;min-width:120px;display:block">
               <button class="btn-action btn-maps" style="width:100%" aria-label="Abrir localização no Google Maps">
                 ${ic.external} Como chegar
               </button>
             </a>
-            <a href="https://api.whatsapp.com/send?text=${waText}" target="_blank" rel="noopener noreferrer" style="flex:1;min-width:120px;display:block">
+            <a href="https://api.whatsapp.com/send?text=${waText}" target="_blank" rel="noopener noreferrer" onclick="track('whatsapp_share',{evento:'${e.slug}'})" style="flex:1;min-width:120px;display:block">
               <button class="btn-action btn-whatsapp" style="width:100%" aria-label="Compartilhar no WhatsApp">
                 ${ic.whatsapp} WhatsApp
               </button>
@@ -1907,7 +1922,8 @@ function attachAll(route) {
   // ── SEARCH OVERLAY ──
   const si = q('#searchInput');
   if(si) {
-    si.addEventListener('input', e=>{ S.searchQ=e.target.value; renderSearchPartial(); si.focus(); });
+    si.addEventListener('input', e=>{ S.searchQ=e.target.value; renderSearchPartial(); si.focus();
+      clearTimeout(_buscaTimer); _buscaTimer=setTimeout(()=>{ const t=S.searchQ.trim().toLowerCase(); if(t.length>=2) track('busca',{termo:t}); }, 1200); });
     si.addEventListener('keydown', e=>{ if(e.key==='Escape'){ S.searchOpen=false; S.searchQ=''; render(); } });
   }
   q('#searchClose')?.addEventListener('click',()=>{ S.searchOpen=false; S.searchQ=''; render(); });
@@ -1940,6 +1956,7 @@ function attachAll(route) {
   q('#shareNative')?.addEventListener('click',()=>{
     const e = getEvento(route.slug);
     if(!e) return;
+    track('share_nativo', { evento: e.slug });
     if(navigator.share) navigator.share({title:e.nome, url:location.href});
     else navigator.clipboard?.writeText(location.href).then(()=>alert('Link copiado!'));
   });
