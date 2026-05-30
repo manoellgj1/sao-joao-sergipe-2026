@@ -330,12 +330,12 @@
       font-family: 'Baloo 2', cursive; font-weight: 900;
       font-size: 1.5rem; color: white; margin-bottom: 1rem; line-height: 1.1;
     }
-    .hoje-cards { display: flex; gap: 0.75rem; overflow-x: auto; padding-bottom: 0.25rem; scrollbar-width: none; }
+    .hoje-cards { display: flex; gap: 0.75rem; overflow-x: auto; padding-bottom: 0.25rem; scrollbar-width: none; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; }
     .hoje-cards::-webkit-scrollbar { display: none; }
 
     /* Hoje event card */
     .hoje-card {
-      flex-shrink: 0; width: 220px;
+      flex-shrink: 0; width: 220px; scroll-snap-align: start;
       background: rgba(255,255,255,.08); border: 1.5px solid rgba(255,255,255,.12);
       border-radius: var(--radius); padding: 1rem;
       cursor: pointer; transition: background .2s, transform .2s, border-color .2s;
@@ -1346,6 +1346,7 @@ function renderHome() {
     filtered = filtered.filter(e=>e.data===HOJE);
   } else {
     if(S.dateFilter) filtered = filtered.filter(e=>e.data===S.dateFilter);
+    else filtered = filtered.filter(e=>e.data>=HOJE); // padrão: do dia de hoje em diante (esconde eventos que já passaram)
     if(S.cityFilter!=='todas') filtered = filtered.filter(e=>e.cidadeSlug===S.cityFilter);
     if(S.festaFilter) filtered = filtered.filter(e=>getFestaSlug(e)===S.festaFilter);
   }
