@@ -616,7 +616,8 @@
 /* ═══════════════════════════════════════════════════════════
    DATA
 ═══════════════════════════════════════════════════════════ */
-const HOJE = "2026-04-08"; // Removido data de demonstração
+// Data real de "hoje" no fuso de Sergipe (vale para qualquer visitante, em qualquer lugar)
+const HOJE = new Intl.DateTimeFormat('en-CA', { timeZone: 'America/Sao_Paulo' }).format(new Date());
 
 const cidades = [
   { nome:"Aracaju",       slug:"aracaju" },
@@ -1106,6 +1107,11 @@ const eventosByCidade = slug => eventos.filter(e=>e.cidadeSlug===slug).sort((a,b
 const eventosByArtista= slug => eventos.filter(e=>e.artistas.some(a=>a.slug===slug));
 const datasOf     = slug => [...new Set(eventosByCidade(slug).map(e=>e.data))].sort();
 const eventosHoje = () => eventos.filter(e=>e.data===HOJE);
+// Eventos da próxima data com programação (para quando "hoje" estiver vazio)
+const proximosEventos = () => {
+  const fut = eventos.filter(e=>e.data>HOJE).sort((a,b)=>a.data.localeCompare(b.data)||a.horario.localeCompare(b.horario));
+  return fut.length ? fut.filter(e=>e.data===fut[0].data) : [];
+};
 
 /* ═══════════════════════════════════════════════════════════
    SVG ICONS
@@ -1400,11 +1406,11 @@ function renderHome() {
 
   <!-- EVENTS LIST -->
   <div class="container section">
-    ${groups.length===0 ? `
+    ${groups.length===0 ? (showHoje ? renderHojeVazio() : `
       <div class="empty-state">
         <div style="color:var(--primary)">${ic.flame}</div>
         <p>Nenhum evento com esses filtros.</p>
-      </div>` :
+      </div>`) :
       groups.map(([data, evts])=>`
         <div class="date-group">
           <div class="date-heading">
@@ -1447,6 +1453,32 @@ function renderHome() {
 }
 
 /* ── Hoje card (dark style) ─────────────────────────────── */
+/* ── Estado "Hoje" sem evento: mostra a próxima festa ───── */
+function renderHojeVazio() {
+  const prox = proximosEventos();
+  if(!prox.length) return `
+    <div class="empty-state">
+      <div style="color:var(--primary)">${ic.flame}</div>
+      <p>Nenhum evento programado no momento.</p>
+    </div>`;
+  const data = prox[0].data;
+  return `
+    <div class="empty-state" style="padding:1.25rem 1rem 0.5rem">
+      <div style="color:var(--primary)">${ic.calendar}</div>
+      <p>Hoje não tem evento. Próxima festa:</p>
+    </div>
+    <div class="date-group">
+      <div class="date-heading">
+        <span style="color:var(--primary)">${ic.calendar}</span>
+        <span class="date-pill">${formatData(data)}</span>
+        <span class="badge badge-muted">${prox.length} evento${prox.length>1?'s':''}</span>
+      </div>
+      <div class="events-grid">
+        ${prox.map(e=>renderEvCard(e)).join('')}
+      </div>
+    </div>`;
+}
+
 function renderHojeCard(e) {
   const nomes = getArtistas(e);
   const cidade = getCidade(e.cidadeSlug);
