@@ -266,6 +266,22 @@
     }
     .sheet-close:hover { border-color: var(--primary); color: var(--primary); }
 
+    /* Feedback */
+    .fab-feedback{position:fixed;right:14px;bottom:84px;z-index:560;width:50px;height:50px;border-radius:9999px;border:none;background:var(--primary);color:#fff;box-shadow:0 6px 18px rgba(0,0,0,.28);font-size:22px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+    .fab-feedback:active{transform:scale(.94)}
+    .fb-form{display:flex;flex-direction:column;gap:.7rem;padding:1rem}
+    .fb-tipos{display:flex;gap:.5rem}
+    .fb-tipo{flex:1;padding:.55rem .25rem;border-radius:.75rem;border:1.5px solid var(--border);background:var(--bg);color:var(--text);cursor:pointer;font-weight:700;font-size:.82rem}
+    .fb-tipo.sel{border-color:var(--primary);background:rgba(234,88,12,.08);color:var(--primary)}
+    .fb-text{width:100%;min-height:96px;padding:.65rem;border-radius:.75rem;border:1.5px solid var(--border);background:var(--bg);color:var(--text);font:inherit;resize:vertical}
+    .fb-input{width:100%;padding:.65rem;border-radius:.75rem;border:1.5px solid var(--border);background:var(--bg);color:var(--text);font:inherit}
+    .fb-text:focus,.fb-input:focus{outline:none;border-color:var(--primary)}
+    .fb-hp{position:absolute;left:-9999px;width:1px;height:1px;opacity:0}
+    .fb-send{width:100%;padding:.8rem;border:none;border-radius:.75rem;background:var(--primary);color:#fff;font-family:'Baloo 2',cursive;font-weight:800;font-size:1rem;cursor:pointer}
+    .fb-send:disabled{opacity:.6}
+    .fb-note{font-size:.7rem;color:var(--muted-fg);text-align:center;margin:0}
+    .fb-msg{text-align:center;padding:2rem 1.5rem;font-family:'Baloo 2',cursive;font-weight:800;font-size:1.1rem}
+
     /* Calendar in sheet */
     .cal-nav-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.75rem; padding: 0.75rem 1rem 0; }
     .cal-nav-btn { width: 40px; height: 40px; border-radius: 0.75rem; border: 1.5px solid var(--border); background: var(--bg); cursor: pointer; display: flex; align-items: center; justify-content: center; color: var(--text); transition: border-color .2s; }
@@ -1095,6 +1111,10 @@ function track(name, data){ try{ if(window.umami) window.umami.track(name, data)
 let _lastTrackedRoute = null;
 let _buscaTimer = null;
 
+/* ── Feedback (Apps Script -> planilha + email) ── */
+const FEEDBACK_ENDPOINT = 'https://script.google.com/macros/s/AKfycbzeKs572FurP23215NdqT6a4T3bLX6Dans4vfNOyxGavA1BpAH_CIs35qloBRZymEkhzA/exec';
+const FEEDBACK_TOKEN = 'sj26_16f4d63413e5846e2852e940';
+
 function formatData(s) { const [y,m,d]=s.split('-').map(Number); return `${d} de ${MESES[m-1]}`; }
 function formatDataCurta(s) { const dt=new Date(s+'T12:00:00'); return {dia:dt.getDate(),dow:DIAS[dt.getDay()]}; }
 
@@ -1165,6 +1185,8 @@ let S = {
   calOpen: false,
   citySheetOpen: false,
   festaSheetOpen: false,
+  fbOpen: false,
+  fbTipo: 'sugestao',
   calMonth: 5,
   calYear: 2026,
   searchOpen: false,
@@ -1230,6 +1252,8 @@ function render() {
     <div id="calSheet" class="bottom-sheet" role="dialog" aria-label="Escolher data"></div>
     <div id="citySheet" class="bottom-sheet" role="dialog" aria-label="Escolher cidade"></div>
     <div id="festaSheet" class="bottom-sheet" role="dialog" aria-label="Escolher festa"></div>
+    <button class="fab-feedback" id="fabFeedback" aria-label="Enviar feedback" title="Enviar feedback">💬</button>
+    <div id="fbSheet" class="bottom-sheet" role="dialog" aria-label="Enviar feedback"></div>
   `;
 
   attachAll(route);
@@ -1614,6 +1638,29 @@ function renderCitySheetContent() {
   </div>`;
 }
 
+/* ── Gaveta de feedback ─────────────────────────────────── */
+function renderFbSheetContent() {
+  const t = S.fbTipo;
+  return `
+  <div class="sheet-handle"></div>
+  <div class="sheet-head">
+    <span class="sheet-head-title">💬 Enviar feedback</span>
+    <button class="sheet-close" id="fbSheetClose" aria-label="Fechar">${ic.x}</button>
+  </div>
+  <form class="fb-form" id="fbForm" autocomplete="off">
+    <div class="fb-tipos" id="fbTipos">
+      <button type="button" class="fb-tipo ${t==='erro'?'sel':''}" data-tipo="erro">🐞 Erro</button>
+      <button type="button" class="fb-tipo ${t==='sugestao'?'sel':''}" data-tipo="sugestao">💡 Sugestão</button>
+      <button type="button" class="fb-tipo ${t==='elogio'?'sel':''}" data-tipo="elogio">❤️ Elogio</button>
+    </div>
+    <textarea class="fb-text" id="fbMensagem" placeholder="Conta pra gente: o que faltou, achou um erro, ou um elogio?" required></textarea>
+    <input class="fb-input" id="fbContato" placeholder="Email ou WhatsApp (só se quiser resposta)">
+    <input class="fb-hp" id="fbWebsite" tabindex="-1" aria-hidden="true" autocomplete="off" placeholder="Não preencha">
+    <button type="submit" class="fb-send" id="fbSend">Enviar</button>
+    <p class="fb-note">Usamos seus dados só pra responder seu feedback.</p>
+  </form>`;
+}
+
 /* ── Atualiza as bottom sheets no DOM ───────────────────── */
 function updateSheets() {
   const datasComEvento = new Set(eventos.map(e=>e.data));
@@ -1621,17 +1668,20 @@ function updateSheets() {
   const calSheet   = q('#calSheet');
   const citySheet  = q('#citySheet');
   const festaSheet = q('#festaSheet');
+  const fbSheet    = q('#fbSheet');
   if(!overlay || !calSheet || !citySheet || !festaSheet) return;
 
-  const anyOpen = S.calOpen || S.citySheetOpen || S.festaSheetOpen;
+  const anyOpen = S.calOpen || S.citySheetOpen || S.festaSheetOpen || S.fbOpen;
   overlay.className    = 'sheet-overlay' + (anyOpen?' open':'');
   calSheet.className   = 'bottom-sheet' + (S.calOpen?' open':'');
   citySheet.className  = 'bottom-sheet' + (S.citySheetOpen?' open':'');
   festaSheet.className = 'bottom-sheet' + (S.festaSheetOpen?' open':'');
+  if(fbSheet) fbSheet.className = 'bottom-sheet' + (S.fbOpen?' open':'');
 
   calSheet.innerHTML   = renderCalSheetContent(datasComEvento);
   citySheet.innerHTML  = renderCitySheetContent();
   festaSheet.innerHTML = renderFestaSheetContent();
+  if(fbSheet) fbSheet.innerHTML = renderFbSheetContent();
 
   attachSheetEvents();
 }
@@ -1640,12 +1690,38 @@ function updateSheets() {
 function attachSheetEvents() {
   // Fechar ao clicar no overlay
   q('#sheetOverlay')?.addEventListener('click',()=>{
-    S.calOpen=false; S.citySheetOpen=false; S.festaSheetOpen=false; updateSheets(); updateFilterChips();
+    S.calOpen=false; S.citySheetOpen=false; S.festaSheetOpen=false; S.fbOpen=false; updateSheets(); updateFilterChips();
   });
   // Botões de fechar
   q('#calSheetClose')?.addEventListener('click',()=>{ S.calOpen=false; updateSheets(); updateFilterChips(); });
   q('#citySheetClose')?.addEventListener('click',()=>{ S.citySheetOpen=false; updateSheets(); updateFilterChips(); });
   q('#festaSheetClose')?.addEventListener('click',()=>{ S.festaSheetOpen=false; updateSheets(); updateFilterChips(); });
+  // Feedback
+  q('#fbSheetClose')?.addEventListener('click',()=>{ S.fbOpen=false; updateSheets(); });
+  qq('#fbTipos .fb-tipo').forEach(b=>b.addEventListener('click',()=>{ S.fbTipo=b.dataset.tipo; qq('#fbTipos .fb-tipo').forEach(x=>x.classList.toggle('sel',x===b)); }));
+  q('#fbForm')?.addEventListener('submit', async (ev)=>{
+    ev.preventDefault();
+    if(q('#fbWebsite')?.value) return;                       // honeypot
+    const msg = (q('#fbMensagem')?.value||'').trim();
+    if(!msg){ q('#fbMensagem')?.focus(); return; }
+    const btn = q('#fbSend'); if(btn){ btn.disabled=true; btn.textContent='Enviando...'; }
+    const fd = new FormData();
+    fd.append('token', FEEDBACK_TOKEN);
+    fd.append('tipo', S.fbTipo);
+    fd.append('mensagem', msg);
+    fd.append('contato', (q('#fbContato')?.value||'').trim());
+    fd.append('pagina', location.hash || '/');
+    fd.append('dispositivo', navigator.userAgent);
+    try{
+      await fetch(FEEDBACK_ENDPOINT, { method:'POST', mode:'no-cors', body: fd });
+      track('feedback_enviado', { tipo: S.fbTipo });
+      const fb = q('#fbSheet'); if(fb) fb.innerHTML = `<div class="sheet-handle"></div><div class="fb-msg">Valeu! Recebemos seu feedback 🙌</div>`;
+      setTimeout(()=>{ S.fbOpen=false; S.fbTipo='sugestao'; updateSheets(); }, 1800);
+    }catch(_){
+      if(btn){ btn.disabled=false; btn.textContent='Enviar'; }
+      alert('Ops, não consegui enviar agora. Tenta de novo?');
+    }
+  });
   // Navegação de mês
   q('#calPrev')?.addEventListener('click',()=>{ S.calMonth--; if(S.calMonth<0){S.calMonth=11;S.calYear--;} updateSheets(); });
   q('#calNext')?.addEventListener('click',()=>{ S.calMonth++; if(S.calMonth>11){S.calMonth=0;S.calYear++;} updateSheets(); });
@@ -1969,6 +2045,7 @@ function attachAll(route) {
   // ── BOTTOM NAV ──
   q('#bnav-home')?.addEventListener('click',()=>{ S.tab='home'; S.dateFilter=null; S.cityFilter='todas'; go('/'); render(); });
   q('#bnav-hoje')?.addEventListener('click',()=>{ S.tab='hoje'; go('/'); render(); });
+  q('#fabFeedback')?.addEventListener('click',()=>{ S.fbOpen=true; updateSheets(); track('feedback_aberto',{pagina:location.hash||'/'}); setTimeout(()=>q('#fbMensagem')?.focus(),350); });
   q('#bnav-cidades')?.addEventListener('click',()=>{ S.tab='cidades'; go('/cidades'); });
   q('#bnav-buscar')?.addEventListener('click',()=>{ S.searchOpen=true; render(); setTimeout(()=>q('#searchInput')?.focus(),50); });
 
