@@ -597,7 +597,7 @@
       padding: 0.75rem 1rem; cursor: pointer; transition: background .2s;
     }
     .lineup-item:hover { background: #FDE68A; }
-    .lineup-num { font-size: 0.75rem; font-weight: 900; color: var(--primary); width: 1.5rem; }
+    .lineup-num { font-size: 0.75rem; font-weight: 900; color: var(--primary); min-width: 2.75rem; white-space: nowrap; flex-shrink: 0; }
     .lineup-name { font-size: 0.9rem; font-weight: 700; }
     .actions-row { display: flex; gap: 0.75rem; flex-wrap: wrap; }
     .btn-action {
@@ -696,6 +696,9 @@ const cidades = [
   { nome:"Simão Dias",    slug:"simao-dias" },
   { nome:"Poço Redondo",  slug:"poco-redondo" },
   { nome:"Propriá",       slug:"propria" },
+  { nome:"Areia Branca",  slug:"areia-branca" },
+  { nome:"Nossa Senhora do Socorro", slug:"nossa-senhora-do-socorro" },
+  { nome:"Capela",        slug:"capela" },
 ];
 
 const locais = [
@@ -897,6 +900,88 @@ const artistas = [
   { nome:"Joia do Couro",              slug:"joia-do-couro" },
   { nome:"Rita Benneditto",            slug:"rita-benneditto" },
   { nome:"Patota do Zé",               slug:"patota-do-ze" },
+  // — Outras cidades (programação real adicionada) —
+  { nome:"Fabinho do Acordeon",        slug:"fabinho-do-acordeon" },
+  { nome:"Manim Vaqueiro",             slug:"manim-vaqueiro" },
+  { nome:"Banda Xoxotear",             slug:"banda-xoxotear" },
+  { nome:"Banda Seu Desejo",           slug:"banda-seu-desejo" },
+  { nome:"Helenilson Santana",         slug:"helenilson-santana" },
+  { nome:"Tyta Barão",                 slug:"tyta-barao" },
+  { nome:"Banda Magníficos",           slug:"banda-magnificos" },
+  { nome:"Zezo Potiguar",              slug:"zezo-potiguar" },
+  { nome:"Reinan Santos",              slug:"reinan-santos" },
+  { nome:"Mano Valter",                slug:"mano-valter" },
+  { nome:"Polyana Lins",               slug:"polyana-lins" },
+  { nome:"Vitor Santos",               slug:"vitor-santos" },
+  { nome:"Eric Land",                  slug:"eric-land" },
+  { nome:"Vanessinha Mix",             slug:"vanessinha-mix" },
+  { nome:"Toque Dez",                  slug:"toque-dez" },
+  { nome:"Lairton",                    slug:"lairton" },
+  { nome:"Xand Santos",                slug:"xand-santos" },
+  { nome:"Moisés Ferraz",              slug:"moises-ferraz" },
+  { nome:"Denis Andrade",              slug:"denis-andrade" },
+  { nome:"Tutu Mar Azul",              slug:"tutu-mar-azul" },
+  { nome:"Denio Rezende",              slug:"denio-rezende" },
+  { nome:"Thiago Dativo",              slug:"thiago-dativo" },
+  { nome:"Vânia Leal",                 slug:"vania-leal" },
+  { nome:"Padre Sandro",               slug:"padre-sandro" },
+  { nome:"Joseane Dy Josa",            slug:"joseane-dy-josa" },
+  { nome:"Forró Chic Chic",            slug:"forro-chic-chic" },
+  { nome:"Jeanny Lins",                slug:"jeanny-lins" },
+  { nome:"Wendel",                     slug:"wendel" },
+  { nome:"Henrique Alves",             slug:"henrique-alves" },
+  { nome:"X1 do Brega",                slug:"x1-do-brega" },
+  { nome:"Alan das Vaquejadas",        slug:"alan-das-vaquejadas" },
+  { nome:"Cícero das Vaquejadas",      slug:"cicero-das-vaquejadas" },
+  { nome:"Raynel Guedes",              slug:"raynel-guedes" },
+  { nome:"Ramon e Randinho",           slug:"ramon-e-randinho" },
+  { nome:"Aline Souza",                slug:"aline-souza" },
+  { nome:"Clássico Jr",                slug:"classico-jr" },
+  { nome:"Bell Marques",               slug:"bell-marques" },
+  { nome:"Marcelo Lacerda",            slug:"marcelo-lacerda" },
+  { nome:"Paulo Santos",               slug:"paulo-santos" },
+  { nome:"Robson Playboyzinho",        slug:"robson-playboyzinho" },
+  { nome:"Helder Nascimento",          slug:"helder-nascimento" },
+  { nome:"Neto Ventura",               slug:"neto-ventura" },
+  { nome:"Jerônimo Vaqueiro",          slug:"jeronimo-vaqueiro" },
+  { nome:"Alex Santos, O Safadinho",   slug:"alex-santos-o-safadinho" },
+  { nome:"Tatua, o Mensageiro do Forró", slug:"tatua-o-mensageiro-do-forro" },
+  { nome:"Janio Linhares e Banda",     slug:"janio-linhares-e-banda" },
+  { nome:"John Alysson",               slug:"john-alysson" },
+  { nome:"Vanicleia Silva",            slug:"vanicleia-silva" },
+  { nome:"Carlos Greg",                slug:"carlos-greg" },
+  { nome:"Marquinhos dos Paredões",    slug:"marquinhos-dos-paredoes" },
+  { nome:"Gileno Xavier",              slug:"gileno-xavier" },
+  { nome:"Davi e Matheus",             slug:"davi-e-matheus" },
+  { nome:"Flávio Farias",              slug:"flavio-farias" },
+  { nome:"Flávio Costa",               slug:"flavio-costa" },
+  { nome:"Ricardo Mart",               slug:"ricardo-mart" },
+  { nome:"Jadson Lisboa",              slug:"jadson-lisboa" },
+  { nome:"Edy Fonseca",                slug:"edy-fonseca" },
+  { nome:"Rodriguinho do Forró",       slug:"rodriguinho-do-forro" },
+  { nome:"Discarada",                  slug:"discarada" },
+  { nome:"Sandrinha Ravely",           slug:"sandrinha-ravely" },
+  { nome:"Jhony Fraga",                slug:"jhony-fraga" },
+  { nome:"Jamanta Show",               slug:"jamanta-show" },
+  { nome:"Diones Costa",               slug:"diones-costa" },
+  { nome:"Léo Lopes",                  slug:"leo-lopes" },
+  { nome:"Zé Elias Cantor",            slug:"ze-elias-cantor" },
+  { nome:"Felipe Mariano",             slug:"felipe-mariano" },
+  { nome:"Juninho O Original",         slug:"juninho-o-original" },
+  { nome:"Lairton e Seus Teclados",    slug:"lairton-e-seus-teclados" },
+  { nome:"Silvânia & Berg",            slug:"silvania-e-berg" },
+  { nome:"Thiago Brado",               slug:"thiago-brado" },
+  { nome:"Erick Souza",                slug:"erick-souza" },
+  { nome:"Luiz Ferraz",                slug:"luiz-ferraz" },
+  { nome:"Juninho Moraes",             slug:"juninho-moraes" },
+  { nome:"Rojão Diferente",            slug:"rojao-diferente" },
+  { nome:"Rafinha Bom de Verdade",     slug:"rafinha-bom-de-verdade" },
+  { nome:"Raulzinho do Acordeon",      slug:"raulzinho-do-acordeon" },
+  { nome:"Forrozão Baby Som",          slug:"forrozao-baby-som" },
+  { nome:"Correia do 8 Baixos",        slug:"correia-do-8-baixos" },
+  { nome:"Leonardo",                   slug:"leonardo" },
+  { nome:"Xand Avião",                 slug:"xand-aviao" },
+  { nome:"Banda Seeway",               slug:"banda-seeway" },
 ];
 
 // ── Helpers p/ montar shows ──────────────────────────────
@@ -906,6 +991,17 @@ const FC2  = "Praça Ulisses Guimarães - Santos Dumont";  // Forró Caju — fa
 const FCLG = "Praça Hilton Lopes - Palco Luiz Gonzaga";  // Forró Caju — fase 3
 function ev(id, nome, slug, data, destaque, descricao, arts, local=ADP, horario="19:00") {
   return { id, nome, slug, cidadeSlug:"aracaju", local, data, horario, destaque, descricao, artistas: arts.map((s,i)=>({slug:s,ordem:i+1})) };
+}
+// Helper p/ outras cidades — line-up com horário por artista (opcional).
+// lineup: array de "slug" OU ["slug","hora"]. local/horario/descrição ficam vazios quando não informados.
+function evC(id, nome, slug, cidadeSlug, local, data, descricao, lineup, horario) {
+  const arts = lineup.map((x,i)=>{
+    const s = Array.isArray(x) ? x[0] : x;
+    const h = Array.isArray(x) ? x[1] : null;
+    return h ? {slug:s, ordem:i+1, hora:h} : {slug:s, ordem:i+1};
+  });
+  const hr = horario!==undefined ? horario : ((arts[0] && arts[0].hora) || "");
+  return { id, nome, slug, cidadeSlug, local:local||"", data, horario:hr, destaque:false, descricao:descricao||"", artistas:arts };
 }
 
 const eventos = [
@@ -1140,14 +1236,86 @@ const eventos = [
     ["afoxe-de-preto","joia-do-couro","rita-benneditto","patota-do-ze"],
     ADP,"18:00"),
 
-  // ══ OUTRAS CIDADES ════════════════════════════════════
-  { id:"e01", nome:"São João de Estância",        slug:"sao-joao-estancia",    cidadeSlug:"estancia",       local:"Praça da Matriz",      data:"2026-06-22", horario:"18:00", destaque:true,  descricao:"O maior São João do interior sergipano com guerra de espadas e muito forró.", artistas:[{slug:"mastruz-com-leite",ordem:1},{slug:"adelmario-coelho",ordem:2}] },
-  { id:"e02", nome:"São João de Tobias Barreto",  slug:"sao-joao-tobias",      cidadeSlug:"tobias-barreto", local:"Praça Camerino",       data:"2026-06-23", horario:"20:00", destaque:false, descricao:"Forró autêntico no coração do sertão sergipano.", artistas:[{slug:"zelito-miranda",ordem:1},{slug:"conde-do-forro",ordem:2}] },
-  { id:"e03", nome:"Forró de Lagarto",            slug:"forro-lagarto",        cidadeSlug:"lagarto",        local:"Praça Filomeno Hora",  data:"2026-06-24", horario:"19:00", destaque:false, descricao:"Festa junina com shows ao vivo e comidas típicas.", artistas:[{slug:"circulado-de-fulo",ordem:1},{slug:"jonas-esticado",ordem:2}] },
-  { id:"e04", nome:"Arraiá de Itabaiana",         slug:"arraia-itabaiana",     cidadeSlug:"itabaiana",      local:"Parque de Eventos",    data:"2026-06-22", horario:"18:00", destaque:false, descricao:"Grande arraiá na capital do agreste sergipano.", artistas:[{slug:"luan-estilizado",ordem:1},{slug:"flavio-jose",ordem:2}] },
-  { id:"e05", nome:"São João de Simão Dias",      slug:"sao-joao-simao-dias",  cidadeSlug:"simao-dias",     local:"Praça Central",        data:"2026-06-24", horario:"19:00", destaque:false, descricao:"Tradicional festa junina de Simão Dias com quadrilhas e forró.", artistas:[{slug:"mastruz-com-leite",ordem:1}] },
-  { id:"e06", nome:"São João de Propriá",         slug:"sao-joao-propria",     cidadeSlug:"propria",        local:"Praça São Pedro",      data:"2026-06-23", horario:"19:00", destaque:false, descricao:"Festa às margens do Rio São Francisco.", artistas:[{slug:"calcinha-preta",ordem:1},{slug:"zelito-miranda",ordem:2}] },
-  { id:"e07", nome:"Estância — Noite 2",          slug:"estancia-noite-2",     cidadeSlug:"estancia",       local:"Praça da Matriz",      data:"2026-06-24", horario:"19:00", destaque:false, descricao:"Segunda noite de São João em Estância.", artistas:[{slug:"wesley-safadao",ordem:1},{slug:"estakazero",ordem:2}] },
+  // ══ OUTRAS CIDADES — programação real ═════════════════
+  // — ESTÂNCIA (com horário por artista) —
+  evC("oc01","Estância — 31 de maio","estancia-2026-05-31","estancia","","2026-05-31","",
+    [["fabinho-do-acordeon","22h"],["henry-freitas","23h30"],["dudu-moral","1h30"],["ze-vaqueiro","3h"],["manim-vaqueiro","4h30"]]),
+  evC("oc02","Estância — 23 de junho","estancia-2026-06-23","estancia","","2026-06-23","",
+    [["banda-xoxotear","22h"],["taty-girl","23h30"],["banda-seu-desejo","1h30"],["alcymar-monteiro","3h"],["helenilson-santana","5h"]]),
+  evC("oc03","Estância — 26 de junho","estancia-2026-06-26","estancia","","2026-06-26","",
+    [["vitor-fernandes","22h"],["dorgival-dantas","23h30"],["tyta-barao","1h"],["heitor-costa","2h30"],["banda-magnificos","4h"]]),
+  evC("oc04","Estância — 27 de junho","estancia-2026-06-27","estancia","","2026-06-27","",
+    [["chirlys-trindade","22h"],["rai-saia-rodada","23h30"],["zezo-potiguar","1h"],["reinan-santos","2h30"],["luan-estilizado","4h"]]),
+
+  // — AREIA BRANCA —
+  evC("oc05","Areia Branca — 29 de maio","areia-branca-2026-05-29","areia-branca","","2026-05-29","Show religioso.",
+    ["mano-valter"]),
+  evC("oc06","Areia Branca — 30 de maio","areia-branca-2026-05-30","areia-branca","","2026-05-30","",
+    ["nineia-oliveira","luan-estilizado","polyana-lins","ze-vaqueiro","vitor-santos","henry-freitas","mikael-santos"]),
+  evC("oc07","Areia Branca — 31 de maio","areia-branca-2026-05-31","areia-branca","","2026-05-31","Encontro Cultural.",
+    ["ygor-raniere","eric-land","vanessinha-mix","wesley-safadao","toque-dez","klessinha","lairton"]),
+  evC("oc08","Areia Branca — 13 de junho","areia-branca-2026-06-13","areia-branca","","2026-06-13","Jogo do Brasil.",
+    ["xand-santos","moises-ferraz","denis-andrade","igor-ativado","tutu-mar-azul"]),
+  evC("oc09","Areia Branca — 19 de junho","areia-branca-2026-06-19","areia-branca","","2026-06-19","Jogo do Brasil.",
+    ["denio-rezende","thiago-dativo","vania-leal"]),
+  evC("oc10","Areia Branca — 22 de junho","areia-branca-2026-06-22","areia-branca","","2026-06-22","Show religioso.",
+    ["padre-sandro"]),
+  evC("oc11","Areia Branca — 23 de junho","areia-branca-2026-06-23","areia-branca","","2026-06-23","",
+    ["joseane-dy-josa","forro-chic-chic","alcymar-monteiro","jeanny-lins"]),
+  evC("oc12","Areia Branca — 27 de junho","areia-branca-2026-06-27","areia-branca","","2026-06-27","",
+    ["wendel","henrique-alves","danielzinho-jr","tatah-santana","x1-do-brega"]),
+  evC("oc13","Areia Branca — 28 de junho","areia-branca-2026-06-28","areia-branca","","2026-06-28","Cavalgada. No Forródromo: Raynel Guedes e Ramon e Randinho.",
+    ["alan-das-vaquejadas","cicero-das-vaquejadas","raynel-guedes","ramon-e-randinho"]),
+
+  // — LAGARTO —
+  evC("oc14","Lagarto — 23 de junho","lagarto-2026-06-23","lagarto","","2026-06-23","",
+    ["brasas-do-forro","joelma","leonne-o-nobre","panda","aline-souza","mariana-fagundes"]),
+  evC("oc15","Lagarto — 24 de junho","lagarto-2026-06-24","lagarto","","2026-06-24","",
+    ["classico-jr","bell-marques","rey-vaqueiro","simone-mendes","marcelo-lacerda"]),
+  evC("oc16","Lagarto — 27 de junho","lagarto-2026-06-27","lagarto","","2026-06-27","",
+    ["forro-brasil","cavaleiros-do-forro","paulo-santos","mastruz-com-leite","rai-saia-rodada","robson-playboyzinho"]),
+  evC("oc17","Lagarto — 28 de junho","lagarto-2026-06-28","lagarto","","2026-06-28","",
+    ["helder-nascimento","bruno-e-marrone","neto-ventura","jeronimo-vaqueiro","wesley-safadao"]),
+
+  // — ITABAIANA —
+  evC("oc18","Itabaiana — Quermesse (6 de junho)","itabaiana-2026-06-06-quermesse","itabaiana","Praça Fausto Cardoso","2026-06-06","Quermesse.",
+    ["forro-brasil","alex-santos-o-safadinho"]),
+  evC("oc19","Itabaiana — Praça de Eventos (6 de junho)","itabaiana-2026-06-06","itabaiana","Praça de Eventos","2026-06-06","",
+    ["tatua-o-mensageiro-do-forro","janio-linhares-e-banda","john-alysson","vanicleia-silva","jeanny-lins","carlos-greg","marquinhos-dos-paredoes","gileno-xavier","davi-e-matheus","flavio-farias"]),
+  evC("oc20","Itabaiana — Cortejo da Carreata Mirim (7 de junho)","itabaiana-2026-06-07-cortejo","itabaiana","","2026-06-07","Cortejo da Carreata Mirim.",
+    ["flavio-costa","ricardo-mart"]),
+  evC("oc21","Itabaiana — Praça de Eventos (7 de junho)","itabaiana-2026-06-07","itabaiana","Praça de Eventos","2026-06-07","",
+    ["jadson-lisboa","edy-fonseca","rodriguinho-do-forro","discarada","sandrinha-ravely","jhony-fraga","jamanta-show","diones-costa"]),
+  evC("oc22","Itabaiana — Feira do Caminhão (9 de junho)","itabaiana-2026-06-09","itabaiana","Arena Peixoto","2026-06-09","19h: Abertura oficial da feira. 20h: Festival de Quadrilhas Juninas.",
+    [],"19h"),
+  evC("oc23","Itabaiana — Praça de Eventos (10 de junho)","itabaiana-2026-06-10","itabaiana","Praça de Eventos","2026-06-10","Feira do Caminhão (Arena Peixoto): 14h abertura dos estandes, 19h Festival de Quadrilhas Juninas, 21h encerramento.",
+    ["leo-lopes","aline-souza","ze-elias-cantor","gusttavo-lima","danielzinho-jr","mikael-santos"]),
+  evC("oc24","Itabaiana — Praça de Eventos (11 de junho)","itabaiana-2026-06-11","itabaiana","Praça de Eventos","2026-06-11","Feira do Caminhão (Arena Peixoto): 14h abertura dos estandes, 19h Festival de Quadrilhas Juninas, 21h encerramento.",
+    ["felipe-mariano","juninho-o-original","lairton-e-seus-teclados","nattan","ze-vaqueiro","henry-freitas"]),
+  evC("oc25","Itabaiana — Praça Etelvino Mendonça (12 de junho)","itabaiana-2026-06-12","itabaiana","Praça Etelvino Mendonça (Praça de Eventos)","2026-06-12","Alvorada dos Caminhoneiros (Av. Dr. Luiz Magalhães): 5h30 saída da carreata, 6h evento surpresa. Feira do Caminhão (Arena Peixoto): 14h estandes, 19h Festival de Quadrilhas Juninas, 21h encerramento.",
+    ["reinan-santos","tatah-santana","silvania-e-berg","wesley-safadao","x1-do-brega","natanzinho-lima"]),
+  evC("oc26","Itabaiana — Procissão de Santo Antônio (13 de junho)","itabaiana-2026-06-13","itabaiana","Praça Fausto Cardoso","2026-06-13","Procissão de Santo Antônio.",
+    [["thiago-brado","20h"]]),
+
+  // — NOSSA SENHORA DO SOCORRO —
+  evC("oc27","Nossa Senhora do Socorro — 30 de maio","nossa-senhora-do-socorro-2026-05-30","nossa-senhora-do-socorro","Sede","2026-05-30","",
+    ["erick-souza","ygor-raniere","mikael-santos","larissa-costa","luiz-ferraz"]),
+  evC("oc28","Nossa Senhora do Socorro — 6 de junho","nossa-senhora-do-socorro-2026-06-06","nossa-senhora-do-socorro","Jardim","2026-06-06","",
+    ["franquinho-vaqueiro","danielzinho-jr","juninho-moraes","tatah-santana","andre-novaes"]),
+  evC("oc29","Nossa Senhora do Socorro — 20 de junho","nossa-senhora-do-socorro-2026-06-20","nossa-senhora-do-socorro","Parque dos Faróis","2026-06-20","",
+    ["forro-brasil","rojao-diferente","luanzinho-moraes","dudu-moral","alisson-lima"]),
+  evC("oc30","Nossa Senhora do Socorro — 26 de junho","nossa-senhora-do-socorro-2026-06-26","nossa-senhora-do-socorro","Arena Siri","2026-06-26","",
+    ["lourinho-do-acordeon","heitor-costa","yasmin-sensacao","liene-show","rafinha-bom-de-verdade"]),
+  evC("oc31","Nossa Senhora do Socorro — 27 de junho","nossa-senhora-do-socorro-2026-06-27","nossa-senhora-do-socorro","Arena Siri","2026-06-27","",
+    ["leonne-o-nobre","klessinha","cintura-fina","ramon-e-randinho","fogo-na-saia"]),
+
+  // — CAPELA —
+  evC("oc32","Capela — 26 de junho","capela-2026-06-26","capela","","2026-06-26","",
+    ["raulzinho-do-acordeon","bell-marques","ze-vaqueiro","forrozao-baby-som","leonne-o-nobre"]),
+  evC("oc33","Capela — 27 de junho","capela-2026-06-27","capela","","2026-06-27","",
+    ["correia-do-8-baixos","alcymar-monteiro","leonardo","devinho-novaes","henry-freitas"]),
+  evC("oc34","Capela — 28 de junho","capela-2026-06-28","capela","","2026-06-28","Busca do Mastro.",
+    ["xand-aviao","banda-seeway"]),
 ];
 
 /* ═══════════════════════════════════════════════════════════
@@ -1188,13 +1356,13 @@ const getEvento   = slug => eventos.find(e=>e.slug===slug);
 const getArtista  = slug => artistas.find(a=>a.slug===slug);
 const getLocal    = nome => locais.find(l=>l.nome===nome);
 const getArtistas = ev   => [...ev.artistas].sort((a,b)=>a.ordem-b.ordem).map(a=>getArtista(a.slug)?.nome).filter(Boolean);
-const eventosByCidade = slug => eventos.filter(e=>e.cidadeSlug===slug).sort((a,b)=>a.data.localeCompare(b.data)||a.horario.localeCompare(b.horario));
+const eventosByCidade = slug => eventos.filter(e=>e.cidadeSlug===slug).sort((a,b)=>a.data.localeCompare(b.data)||(a.horario||'').localeCompare(b.horario||''));
 const eventosByArtista= slug => eventos.filter(e=>e.artistas.some(a=>a.slug===slug));
 const datasOf     = slug => [...new Set(eventosByCidade(slug).map(e=>e.data))].sort();
 const eventosHoje = () => eventos.filter(e=>e.data===HOJE);
 // Eventos da próxima data com programação (para quando "hoje" estiver vazio)
 const proximosEventos = () => {
-  const fut = eventos.filter(e=>e.data>HOJE).sort((a,b)=>a.data.localeCompare(b.data)||a.horario.localeCompare(b.horario));
+  const fut = eventos.filter(e=>e.data>HOJE).sort((a,b)=>a.data.localeCompare(b.data)||(a.horario||'').localeCompare(b.horario||''));
   return fut.length ? fut.filter(e=>e.data===fut[0].data) : [];
 };
 
@@ -1398,7 +1566,7 @@ function renderSearchOverlay() {
         resultsHtml += evts.map(e=>`
           <div class="search-event-card" data-goto="/evento/${e.slug}">
             <div class="search-event-name">${esc(e.nome)}</div>
-            <div class="search-event-meta">${formatData(e.data)} · ${e.horario} · ${getCidade(e.cidadeSlug)?.nome||''}</div>
+            <div class="search-event-meta">${formatData(e.data)}${e.horario?` · ${e.horario}`:''} · ${getCidade(e.cidadeSlug)?.nome||''}</div>
           </div>`).join('');
       }
     }
@@ -1442,7 +1610,7 @@ function renderHome() {
     if(S.cityFilter!=='todas') filtered = filtered.filter(e=>e.cidadeSlug===S.cityFilter);
     if(S.festaFilter) filtered = filtered.filter(e=>getFestaSlug(e)===S.festaFilter);
   }
-  filtered.sort((a,b)=>a.data.localeCompare(b.data)||a.horario.localeCompare(b.horario));
+  filtered.sort((a,b)=>a.data.localeCompare(b.data)||(a.horario||'').localeCompare(b.horario||''));
 
   // Group by date
   const byDate = {};
@@ -1588,7 +1756,7 @@ function renderHojeCard(e) {
   return `
   <div class="hoje-card" onclick="go('/evento/${e.slug}')" role="button" tabindex="0" aria-label="${esc(e.nome)}">
     ${e.destaque?'<div class="destaque-glow" aria-hidden="true"></div>':''}
-    <div class="hoje-card-time">${ic.clock} ${e.horario}</div>
+    ${e.horario?`<div class="hoje-card-time">${ic.clock} ${esc(e.horario)}</div>`:''}
     <div class="hoje-card-name">${esc(e.nome)}</div>
     <div class="hoje-card-city">${ic.pin} ${esc(cidade?.nome||'')}</div>
     ${nomes.length?`<div class="hoje-card-artists">${nomes.map(n=>`<span class="artist-pill">${esc(n)}</span>`).join('')}</div>`:''}
@@ -1600,7 +1768,7 @@ function renderEvCard(e) {
   const cidade = getCidade(e.cidadeSlug);
   const nomes = getArtistas(e);
   return `
-  <div class="ev-card" onclick="go('/evento/${e.slug}')" role="button" tabindex="0" aria-label="${esc(e.nome)}, ${formatData(e.data)} às ${e.horario}">
+  <div class="ev-card" onclick="go('/evento/${e.slug}')" role="button" tabindex="0" aria-label="${esc(e.nome)}, ${formatData(e.data)}${e.horario?` às ${e.horario}`:''}">
     <div class="ev-card-top-bar ${e.destaque?'destaque':''}"></div>
     <div class="ev-card-body">
       <div class="ev-card-head">
@@ -1609,7 +1777,7 @@ function renderEvCard(e) {
       </div>
       <div class="ev-meta">
         ${cidade?`<span class="ev-meta-item">${ic.pin} ${esc(cidade.nome)}</span>`:''}
-        <span class="ev-meta-item">${ic.clock} ${e.horario}</span>
+        ${e.horario?`<span class="ev-meta-item">${ic.clock} ${esc(e.horario)}</span>`:''}
       </div>
     </div>
     ${nomes.length?`<div class="ev-artists">${nomes.map(n=>`<span class="ev-artist-tag">${esc(n)}</span>`).join('')}</div>`:''}
@@ -1950,7 +2118,7 @@ function renderEvento(slug) {
     ? `https://www.google.com/maps/search/?api=1&query=${local.lat},${local.lng}`
     : `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(e.local+' '+(cidade?.nome||'')+' Sergipe')}`;
 
-  const waText = encodeURIComponent(`🎪 *${e.nome}*\n📅 ${formatData(e.data)} às ${e.horario}\n📍 ${e.local}${cidade?` — ${cidade.nome}`:''}\n\n_São João de Sergipe 2026_`);
+  const waText = encodeURIComponent(`🎪 *${e.nome}*\n📅 ${formatData(e.data)}${e.horario?` às ${e.horario}`:''}\n📍 ${e.local?e.local+(cidade?` — ${cidade.nome}`:''):(cidade?cidade.nome:'')}\n\n_São João de Sergipe 2026_`);
 
   return `
   <div class="page-hero">
@@ -1969,15 +2137,16 @@ function renderEvento(slug) {
         </div>
         <div class="ev-detail-body">
           <div style="display:flex;flex-direction:column;gap:.625rem">
-            ${cidade?`<div class="info-row">${ic.pin} <span><strong>${esc(e.local)}</strong> — ${esc(cidade.nome)}</span></div>`:''}
+            ${cidade?`<div class="info-row">${ic.pin} <span>${e.local?`<strong>${esc(e.local)}</strong> — `:''}${esc(cidade.nome)}</span></div>`:''}
             <div class="info-row">${ic.calendar} <span>${formatData(e.data)}</span></div>
-            <div class="info-row">${ic.clock} <span>${e.horario}</span></div>
+            ${e.horario?`<div class="info-row">${ic.clock} <span>${esc(e.horario)}</span></div>`:''}
           </div>
+          ${e.descricao?`
           <hr class="divider"/>
           <div>
             <div class="sub-heading">Sobre o evento</div>
             <p class="descricao">${esc(e.descricao)}</p>
-          </div>
+          </div>`:''}
           ${lineup.length?`
           <hr class="divider"/>
           <div>
@@ -1985,7 +2154,7 @@ function renderEvento(slug) {
             <div class="lineup">
               ${lineup.map((a,i)=>`
                 <div class="lineup-item" onclick="go('/artista/${a.slug}')" role="button" tabindex="0" aria-label="${a.art?.nome||a.slug}">
-                  <span class="lineup-num">${i+1}º</span>
+                  <span class="lineup-num">${a.hora?esc(a.hora):(i+1)+'º'}</span>
                   <span class="lineup-name">${esc(a.art?.nome||a.slug)}</span>
                   <span style="margin-left:auto;color:var(--muted-fg)">${ic.chev}</span>
                 </div>`).join('')}
@@ -2048,7 +2217,7 @@ function renderArtista(slug) {
                   <div class="agenda-meta">
                     ${cidade?`<span>${ic.pin} ${esc(cidade.nome)}</span>`:''}
                     <span>${ic.calendar} ${formatData(e.data)}</span>
-                    <span>${ic.clock} ${e.horario}</span>
+                    ${e.horario?`<span>${ic.clock} ${esc(e.horario)}</span>`:''}
                   </div>
                 </div>`;
               }).join('')
@@ -2186,7 +2355,7 @@ function renderSearchPartial() {
       if(arts.length) html += `<div class="search-section-title">Artistas</div><div>${arts.map(a=>`<span class="search-tag" data-goto="/artista/${a.slug}">${ic.music} ${esc(a.nome)}</span>`).join('')}</div>`;
       if(evts.length) {
         html += `<div class="search-section-title">Eventos</div>`;
-        html += evts.map(e=>`<div class="search-event-card" data-goto="/evento/${e.slug}"><div class="search-event-name">${esc(e.nome)}</div><div class="search-event-meta">${formatData(e.data)} · ${e.horario} · ${getCidade(e.cidadeSlug)?.nome||''}</div></div>`).join('');
+        html += evts.map(e=>`<div class="search-event-card" data-goto="/evento/${e.slug}"><div class="search-event-name">${esc(e.nome)}</div><div class="search-event-meta">${formatData(e.data)}${e.horario?` · ${e.horario}`:''} · ${getCidade(e.cidadeSlug)?.nome||''}</div></div>`).join('');
       }
     }
   }
